@@ -1,0 +1,148 @@
+PRD: VideoBooker – Automated Video Marketing + Bookings for Local Businesses
+
+1) Summary
+- Problem: Local SMBs know video works but lack time, skills, and integrated tools to create promos and turn interest into booked appointments.
+- Solution: One platform that turns business info into weekly, platform-optimized promo videos and converts viewers to appointments via integrated booking and DM assistants.
+- Target: Independent service providers and retail shops (salons, fitness, dental, auto, home services, restaurants).
+- Differentiator: Integrated stack (AI video + posting formats + DM-to-appointment + analytics) at SMB-friendly price.
+
+2) Goals and Success Metrics
+- Primary goals
+  - Reduce time-to-first-promo to under 30 minutes from sign-up.
+  - Drive measurable bookings from social content.
+- North-star metric: Appointments booked per active business per month.
+- KPIs
+  - Onboarding completion rate: ≥70% within 24 hours of signup.
+  - Time-to-first-video: ≤15 minutes median.
+  - Video-to-appointment conversion rate: ≥1.5% in first 90 days; target 3% by month 6 (view → click/DM → booked).
+  - Weekly content cadence adherence: ≥80% of customers publish at least 3 videos/month.
+  - Retention: ≥88% monthly logo retention by month 6.
+  - CAC payback: ≤3 months; Target CPA ≤$100; ROAS ≥4x on paid.
+  - NPS: ≥40 by month 6.
+
+3) Users and Personas
+- Owner-Operator: 1–10 employees, low marketing bandwidth, seeks set-and-forget.
+- Marketing Assistant/Manager: Wants templates, easy edits, reporting.
+- Front-desk/Staff: Needs calendar sync, reminders, and easy rescheduling.
+
+4) Use Cases
+- Create weekly promo videos auto-generated from business profile and offers.
+- Auto-adapt videos for TikTok, Instagram Reels, Facebook, YouTube Shorts, and stories.
+- Capture demand via links, DMs, WhatsApp, SMS; route to booking flow.
+- Sync to Calendly/Acuity and send confirmations/reminders.
+- Track video performance to appointment conversion and revenue proxies.
+
+5) Scope (MVP)
+- In scope (Phase 1)
+  - Onboarding wizard: business details, brand assets, services, hours, location, social handles.
+  - AI video generation from templates with text prompts, logo, brand colors, basic stock assets.
+  - Multi-format exports: 9:16, 1:1, 16:9; captions; safe text areas; CTA end-cards.
+  - Booking integration: Calendly and Acuity (read/write slots, confirmations); basic deposit/offline payment link support.
+  - DM assistant: Respond to common inquiries and hand off to booking link across Instagram DM, Facebook Messenger; optional SMS (Twilio) and WhatsApp Business (if approved).
+  - Analytics: Per-video views/clicks, DM starts, bookings, no-show rate (if available), simple attribution.
+  - Scheduling/Posting: Native scheduler for Facebook/Instagram via Meta Graph API; export/download for TikTok/YouTube; integrate Buffer/Hootsuite as fallback.
+  - Billing: Stripe subscriptions; tiers $199 (Starter), $349 (Pro).
+- Out of scope (Phase 1)
+  - Advanced ad buying optimization.
+  - Full CRM pipeline.
+  - Multi-location roll-ups and franchise admin.
+  - In-app video editor with multi-track timeline (basic edits only).
+  - Payment processing for services (beyond deposit links).
+
+6) Key Features and Requirements
+- Business Onboarding
+  - Wizard collects: categories, top services, offers, bio, brand kit, social links, booking provider.
+  - Acceptance: Complete in ≤10 minutes; all required fields validated; saved as draft.
+- Template-driven Video Generation
+  - Industry templates (at least 12 verticals) with variable slots for copy, footage, music, CTA.
+  - Generate 3 variations per concept; user selects and can tweak copy, colors, duration.
+  - Outputs auto-captioned and platform-safe (no text cutoffs).
+  - SLA: Drafts generated within 3 minutes; retries on failure; watermark on free/demo.
+- Multi-Platform Formats
+  - Auto-resize/reframe; burned-in subtitles; loudness normalization.
+  - Export presets: TikTok, IG Reels, FB Feed/Stories, YT Shorts.
+- Booking Integrations
+  - Calendly/Acuity OAuth; show real-time availability; pass service selected; capture name, phone, email; confirmation and reminders.
+  - Acceptance: Booking success rate ≥98% over 30 days; booking completion ≤60 seconds median from DM or link.
+- DM Assistant to Appointment
+  - FAQ and intent detection: price, hours, location, availability; CTA to book.
+  - Channels: IG DM, FB Messenger (Phase 1); WhatsApp/SMS optional where approved.
+  - Human handoff trigger; business hours awareness; disclaimers and opt-ins per platform policy.
+- Analytics and Reporting
+  - Per-video: impressions (if available via API), clicks, DMs, bookings, show-up rate (if integrated), top channels.
+  - Weekly email digest; cohort metrics; template performance ranking.
+- Scheduling and Publishing
+  - In-app calendar; queue weekly promos; one-click publish to Meta surfaces; export or Buffer/Hootsuite for others.
+- Compliance and Safety
+  - Brand-safe templates; licensed stock; disclosure for AI-generated content if required.
+  - Consent capture for messaging; opt-in and opt-out handling; rate limiting to comply with platform rules.
+
+7) AI/Content Engine
+- Video generation: Primary target Sora 2 via API if available; assumptions required. Fallbacks: Runway, Pika, CapCut API, or composition approach using stock + motion graphics.
+- Agent layer: AgentKit (for orchestration), with guardrails, deterministic flows for booking intents, and tools for calendar, messaging, and analytics.
+- Prompting: Business profile + offer library + seasonal hooks + CTA variants; A/B test copy.
+- Music/VO: Licensed stock library; AI voiceover with clear disclosure; accents and multilingual support.
+
+8) Non-Functional Requirements
+- Performance: 95th percentile video render time under 5 minutes with queueing; dashboard loads <2s on p95.
+- Availability: 99.5% monthly for core app; graceful degradation if render or social APIs degrade.
+- Security: OAuth for integrations; SOC2 roadmap; encryption at rest/in transit; PII minimization; RBAC (Owner, Staff).
+- Privacy/Compliance: GDPR/CCPA-ready; data retention controls; consent and opt-outs for messaging; Meta/TikTok/WhatsApp policies.
+- Accessibility: WCAG 2.1 AA for dashboard; captioned videos by default.
+
+9) Pricing and Packaging (initial)
+- Starter $199/mo: 4 videos/month, 1 platform scheduler (Meta), 1 booking integration, basic analytics, email support.
+- Pro $349/mo: 8 videos/month, multi-platform formats, DM assistant, advanced analytics, priority support.
+- Add-ons: Extra videos pack; multilingual pack; white-label for agencies (Phase 2).
+
+10) Dependencies and Integrations
+- Sora 2 API access or alternative render providers.
+- Calendly, Acuity APIs.
+- Meta Graph API (FB/IG) app approval; WhatsApp Business API/Twilio for messaging; Buffer/Hootsuite.
+- Stripe for billing; stock media providers; TTS/voiceover provider.
+
+11) Risks and Mitigations
+- AI video availability/costs: Implement provider abstraction; caching; offer hybrid template-based edits.
+- Platform policy changes: Maintain compliance playbooks; regular audits; multi-channel redundancy.
+- Educating SMBs: Provide demo lead magnet (free 15-sec video); strong onboarding and case studies.
+- Quality variance: Human-in-the-loop review option; template QA; brand kit locking.
+- Attribution gaps across platforms: Use tracked links/UTMs; DM-start to booking tracking; conservative reporting.
+
+12) Milestones and Timeline (target 5–6 months to GA)
+- Weeks 0–2: Discovery, technical spikes, provider selection, template specs, API/app approvals.
+- Weeks 3–8: Build onboarding, template engine (v1), Calendly/Acuity integration, Meta posting, Stripe billing.
+- Weeks 9–12: DM assistant (IG/FB), analytics v1, scheduler, email digests, performance hardening.
+- Weeks 13–16: Private beta with 25–50 SMBs; fixes; add 8–12 industry templates; tutorial content.
+- Weeks 17–20: Public launch; paid pilots; chamber partnerships; add Buffer/Hootsuite; expand analytics.
+
+13) Acceptance Criteria (selected)
+- As an owner, I can complete onboarding and see 3 draft video options within 15 minutes of signup.
+- As an owner, I can connect Calendly, publish a video to Instagram, and receive at least one working booking link flow in ≤10 minutes.
+- As a prospect, when I DM “Do you have availability Friday?”, I receive a booking CTA with correct Friday slots within 10 seconds.
+- As a user, I can schedule 4 videos for the month and see them posted at the set times on FB/IG.
+- The dashboard shows last 30 days: per-video clicks, DM starts, bookings, and conversion rate; exports to CSV.
+
+14) Analytics and Instrumentation
+- Event tracking: Onboarding steps, template chosen, render started/completed, publish attempts/success, DM intents, booking funnel steps.
+- Cohort views: Retention by industry; content cadence vs. bookings.
+- Alerting: Rendering failures >3% in 1h; API errors with partners; posting failures.
+
+15) Go-To-Market (concise)
+- Lead magnet: Free 15-second demo tailored to business type; target 5–10% conversion to trial.
+- Channels: Facebook/Instagram ads, local business groups, chamber partnerships, agency affiliates.
+- Proof: Rapid case studies showing bookings per video and reduced no-shows via reminders.
+- Pricing promos: Founders plan for first 200 customers (annual discount).
+
+16) Open Questions
+- Sora 2 API/pricing/limits and commercial usage rights timeline; finalize fallback stack.
+- Music licensing scope and geographies; do we include VO for all tiers?
+- TikTok direct publishing: rely on export or pursue API integration at GA?
+- Deposits/payments: add Stripe Payments/Checkout in booking flow or keep link-out to POS?
+- Multilingual support priorities: top 3 languages for subtitles/VO.
+- Franchise/multi-location needs priority for Phase 2?
+
+17) Definition of Done (MVP)
+- 12+ vertical templates, brand-kit support, and platform formats working end-to-end.
+- Calendly/Acuity integrated; IG/FB posting and DM assistant live; Stripe billing live.
+- Analytics v1 with booking attribution; weekly digest; basic support workflows.
+- 25+ beta customers with ≥80% publishing at least 3 videos/month and average ≥1 booking/video in month 1.

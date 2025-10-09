@@ -1,0 +1,23 @@
+{
+  "compilerOptions": {
+    "target": "ES2021",
+    "lib": ["DOM", "DOM.Iterable", "ES2021"],
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "strict": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true,
+    "noEmit": true,
+    "baseUrl": ".",
+    "paths": {
+      "@videobooker/shared/*": ["packages/shared/src/*"],
+      "@videobooker/db/*": ["packages/db/src/*"],
+      "@videobooker/ui/*": ["packages/ui/src/*"]
+    }
+  },
+  "include": ["apps", "services", "packages", "tests"],
+  "exclude": ["node_modules", "dist", "build"]
+}

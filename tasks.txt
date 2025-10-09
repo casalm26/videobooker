@@ -1,0 +1,267 @@
+Below is a phased, prioritized task list to implement the PRD end-to-end. It’s organized as epics with concrete tasks, dependencies, and gating aligned to “Publish first video + get first booking fast.”
+
+Monorepo Skeleton (pre-Phase 0)
+- Decide on package manager (npm workspaces vs. pnpm) and initialize the root `package.json` with workspace globs for `apps/*`, `services/*`, and `packages/*`.
+- Generate baseline TypeScript configs (`tsconfig.base.json`, per-package references) and share ESLint/Prettier settings through `packages/shared/config/`.
+- Scaffold empty folders for `apps/web`, `services/api`, `services/workers`, `packages/shared`, and `packages/db`, each with placeholder README and entry files.
+- Add Docker Compose with MongoDB service, seed script hooks, and convenience scripts (`pnpm db:up`, `pnpm db:seed`).
+- Configure CI pipeline skeleton to run lint, unit test, and build commands against the blank workspace to ensure wiring works before Phase 0 features land.
+
+Phase 0: Foundations and Platform
+- Tech stack decisions and setup
+  - Frontend: React/Next (or SPA + router), state (React Query/Zustand), design system (component library), i18n scaffold, feature flags.
+  - Backend: Node/TypeScript (or Go), REST/GraphQL, Postgres, Redis, S3 + CDN, queue (SQS), server-sent events (SSE) or WebSocket.
+  - CI/CD: Pipelines, previews, trunk-based workflow, release channels.
+  - Secrets management, environment configs, per-tenant data isolation.
+- Auth and RBAC
+  - Email/password + OAuth (Google). Session/JWT strategy. Passwordless optional.
+  - Team roles: Owner, Staff (permissions map).
+  - Business switcher: multi-business tenancy model.
+- Data modeling (DB)
+  - Business, User, TeamMembership, Plan/Usage, BrandKit, Integration (Meta, Calendly, Acuity, Buffer/Hootsuite, Stripe), ServiceCatalog, Offer, Template, MediaAsset, VideoProject, RenderJob, PublishJob, Booking, Conversation, Message, Intent, AnalyticsEvent, ConsentLog.
+- Design system and components
+  - Buttons, chips, tabs, cards, badges, toasts, loaders, calendar, list, modal, side panel, form controls, pill tags, usage/quota pill.
+  - Theming, high-contrast theme, typography, spacing, iconography for platforms/status.
+- Observability/ops foundations
+  - Structured logging, metrics, tracing. Error reporting (Sentry).
+  - Rate limiters and circuit breakers for external APIs.
+
+Phase 1: Onboarding + 30-Minute Launch Checklist
+- UI scaffolding
+  - Left rail nav, top bar (business switcher, plan/usage, help, notifications, profile).
+  - Persistent checklist banner with progress states.
+- Step 1: Business profile
+  - Form with category presets, services (top 3), hours, location.
+  - API: GET/PUT /business, /services; validation; smart defaults resolver by category.
+- Step 2: Connect social (Meta)
+  - OAuth flow for FB/IG. States: Connected, Needs permission, Retry.
+  - Test publish sandbox toggle.
+  - API: /integrations/meta/connect, token exchange, long-lived tokens, refresh.
+  - UI card with benefits, state badges, errors with reconnect CTA.
+- Step 3: Booking integration
+  - OAuth cards for Calendly/Acuity. Live availability preview sidebar.
+  - Service mapping UI: Business service ↔ external event types/durations.
+  - Defaults: confirmation/reminder copy.
+  - Test: “Open booking link” modal with live embed.
+  - API: /integrations/{calendly|acuity}/connect; /availability; /service-mapping.
+  - Webhooks ingestion for bookings created/updated/canceled.
+- Step 4: Brand kit
+  - Upload logo (image processing), color picker, font pairing selector.
+  - Accessibility contrast meter.
+  - API: /brand-kit CRUD. Media upload (signed URLs) + S3.
+- Step 5: Offers and CTAs
+  - Offer template selector by vertical; prefilled copy; CTA defaults to booking link; optional deposit link.
+  - API: /offers CRUD; inject default for category.
+- Step 6: Generate first set
+  - “Generate 3 concepts” button; render progress skeletons; ETA bar.
+  - API: /video-projects (create), /render-jobs (start), SSE for progress.
+  - Fallback render provider handling.
+- Success screen
+  - Carousel of 3 drafts; actions: “Pick 1 to refine” and “Schedule all 3 for this month”.
+- Instrumentation
+  - step_start/complete, time per step, abandonment, generate_start/complete/error.
+
+Phase 2: Library and Media Foundations
+- Library pages
+  - Brand Kit (logos/colors/fonts/subtitle styles with lock options).
+  - Offers (saved snippets, seasonal suggestions surface).
+  - Media (uploads, stock, AI VO settings).
+  - Templates (saved customizations, performance badges).
+- Upload pipeline
+  - File uploader with resume, type/size validation, thumbnails, transcoding queue if needed.
+- Template gallery data
+  - Seed templates by industry with attributes (runtime, tone, hooks).
+  - Admin scripts to load template metadata.
+
+Phase 3: Video Generation and Light Editor
+- Template gallery UI
+  - Industry tiles, “Quick Start” smart pick, seasonal hook.
+- Concept screen
+  - Layout: variation selector, preview with platform safe-area overlays, essential controls panel.
+  - Controls: Copy buckets (Hook/Body/Offer/CTA) with A/B toggles; brand lock (colors, logo position presets, caption style); format 9:16 primary, auto 1:1 and 16:9 derivatives; subtitles on by default (style, language); VO voice select; music selector (auto + 3 curated) with loudness normalization.
+  - Compliance: AI voiceover disclosure toggle with preview placement.
+- CTA end-card micro-builder
+  - Layout picker; QR optional; auto booking link; short link generator; UTM builder; live “Test link” booking modal preview.
+  - API: /links (short links, UTM presets), /qr (image).
+- Preview and renders
+  - Multi-format switcher; queued render per format; retry/cancel.
+  - API: /render-jobs SSE, asset URLs, storage.
+- Post-render actions
+  - Publish now, Schedule, Export, Download.
+- Instrumentation
+  - template_select, render_start/complete/error; provider_used.
+
+Phase 4: Scheduling and Publishing
+- Publishing panel
+  - One-click publish to IG Reels/FB with fields: caption, hashtags, location; best-time suggestions (static heuristics).
+  - “Also export” toggles: TikTok/YouTube via download or Buffer/Hootsuite.
+  - API: /publish-jobs create; provider-specific adapters (Meta Graph API).
+  - Error handling, inline retries, “Meta permissions expired” banner.
+- Calendar view
+  - Weekly/monthly views, drag-and-drop reschedule; status chips; thumbnails.
+  - Usage meter “X/Y videos used” and upsell triggers.
+  - API: /schedule CRUD; drag-drop updates; publish status updates via webhook/callback.
+- Webhooks
+  - Meta publishing callbacks for success/fail updates.
+- Instrumentation
+  - publish_attempt/success/fail; schedule_create/update.
+
+Phase 5: Inbox (DM) and Messaging Assistant
+- DM integrations
+  - Meta Messaging API setup (IG/FB). App review requirements, scopes.
+  - Webhook receiver for messages; storage model for Conversation/Message.
+  - Real-time updates via WebSocket/SSE to frontend.
+- Inbox UI
+  - DM list pane with labels (New, Bot-handled, Needs handoff).
+  - Conversation pane with bot tags, intent chips (price, availability, hours), suggested quick replies, business-hours indicator with toggle.
+  - Booking insert button opens side panel with live availability; inserts tailored link.
+- Assistant setup (Settings > Messaging)
+  - Toggles for intents, tone slider, greeting, hours, footer disclaimers per platform.
+  - Test console: simulate “Do you have availability Friday?” and preview response with slots.
+- Bot engine (MVP rules)
+  - Intent detection (keyword + simple NLP), policy for after-hours pause, rate-limit feedback handling, opt-in and consent footer insertion.
+  - Link personalization with UTM source=DM, medium=social, campaign=video_id.
+- Compliance
+  - Platform policy-conformant opt-ins, footers, threading rules, 24-hour window handling.
+- Instrumentation
+  - dm intent_detected; bot_reply_sent; handoff_initiated; booking_link_sent.
+
+Phase 6: Bookings
+- Overview dashboard
+  - Today’s appointments, new bookings this week, no-show rate (if available), filter by service.
+- Booking detail panel
+  - Source attribution path (Video → Channel → DM/Link), actions (resend confirmation, reschedule, cancel, mark no-show), contact details, opt-in tags.
+- Integrations and webhooks
+  - Calendly/Acuity booking create/update/cancel ingestion; mapping to internal Booking model.
+  - Reschedule/cancel actions delegated to provider where possible; confirmation resend via provider APIs or email service.
+- Availability widget
+  - Reusable mini-widget used in DM panel, test consoles, end-card link test.
+- Instrumentation
+  - booking_start/complete; booking_fail_reason.
+
+Phase 7: Analytics
+- Dashboard (Home)
+  - North-star: Appointments booked this month with sparkline.
+  - Funnel: Views → Click/DM → Booked, per-platform slices; cadence tracker; alerts (render failures, posting errors, DM permission issues).
+- Video details view
+  - Thumbnail, caption, published platforms, status; per-platform metrics; DM starts; bookings; conversion; copy A/B performance; template benchmarking vs peers.
+- Data pipeline
+  - Frontend event SDK for defined events.
+  - Backend event collector → warehouse (e.g., BigQuery) or OLAP store; nightly aggregates.
+  - Connect platform insights (Meta) for views where available; fallback to link click/DM starts proxy.
+- Export
+  - export_csv for analytics.
+- Instrumentation QA
+  - Schema validation, privacy filters, PII minimization.
+
+Phase 8: Settings and Billing
+- Settings
+  - Business profile, hours, services mapping; Integrations (Meta, Calendly/Acuity, Buffer/Hootsuite, Stripe); Compliance & privacy (data retention, consent logs, downloads).
+  - Team management with RBAC.
+- Billing (Stripe)
+  - Plans: Starter vs Pro; checkout/portal; proration; invoices.
+  - Gating: DM assistant, batch exports, advanced analytics; inline upsell modals and value tooltips.
+  - Usage metering: videos/month, add-ons; hard/soft caps; grace logic.
+- Plan/usage surfaces
+  - Usage pill in top bar; contextual upsell in calendar/publish/editor.
+
+Phase 9: States, Guidance, Accessibility, Responsiveness
+- Empty states
+  - Mock content, “Make my first promo” primary CTA, contextual guides.
+- Loaders and resilience
+  - Skeleton loaders; render progress SSE; retry/cancel; fallback provider messaging; error banners with tight actions.
+- Undo
+  - Implement undo for delete/unschedule.
+- Accessibility
+  - Keyboard navigation map; focus states; screen reader labels; captions on by default; color contrast checks.
+- Responsive
+  - Mobile-friendly for approvals, Inbox, scheduling tweaks, metrics view.
+
+Phase 10: Compliance, Security, Privacy
+- Privacy
+  - Consent logs for messaging; data retention policies; user data export/delete endpoints.
+- Security
+  - OAuth scopes least-privilege; token encryption at rest; KMS-managed secrets; IP allowlists for webhooks; CSRF; audit logs.
+- Platform compliance
+  - Meta app review docs and screencasts; rate-limit handling; status banners during degradation.
+- AI disclosure
+  - Toggle and persisted placement; stored with video metadata.
+
+Phase 11: Rendering and Media Infrastructure
+- Provider integration
+  - Primary render provider SDK/API; presets for 9:16 with derivatives; audio ducking/loudness normalization; subtitle burn-in; VO synthesis pipeline.
+  - Fallback provider with health checks and automatic switchover.
+- Storage and CDN
+  - Signed URLs; lifecycle policies; cleaning failed/orphaned assets.
+
+Phase 12: Testing and QA
+- Unit and integration tests
+  - Core services (integrations, render, publish, messaging, booking).
+- Contract tests for third-party APIs
+  - Mock servers; recorded interactions; schema drift alerts.
+- E2E tests (Playwright/Cypress)
+  - 30-minute launch happy path; publish flow; DM-to-booking; reschedule; permission expiry and reconnect.
+- Accessibility tests
+  - Axe checks; keyboard-only journeys.
+- Performance budgets
+  - LCP/TTI targets; bundle splitting; code-splitting for editor; image optimization.
+
+Phase 13: Observability and Runbooks
+- Dashboards and alerts
+  - Render failure rate, publish success rate, DM webhook lag, booking webhook lag, token refresh failures.
+- Runbooks
+  - Meta reconnect issues; render provider outage; booking sync backlog; data backfill scripts.
+- Support tooling
+  - Admin console for user impersonation (with audit), manual job retries, quota adjustments.
+
+Phase 14: Content and Ops
+- Template ops
+  - Pipeline to add/update templates, seasonal hooks, and “Best pick” heuristic.
+- Offer catalog per vertical
+  - Copy review, legal disclaimers where needed.
+- Help and onboarding content
+  - Tooltips, inline examples, quick-start videos, weekly playbook templates.
+- Weekly email digest service
+  - Appointments booked, top video, next recommended publish time.
+
+MVP Cutlines and Dependencies
+- MVP must-have to hit KPI
+  - Onboarding steps 1–6, generate 3 drafts, light editor essentials, CTA end-card with booking link, render queue, one-click publish to IG/FB, calendar minimal, DM assistant basic reply with booking link, booking ingestion/display, dashboard north-star tile, 30-minute checklist.
+- Defer to post-MVP
+  - Buffer/Hootsuite integration, advanced analytics with benchmarking, multi-format batch exports, Pro-only DM automations beyond basics, QR code end-card enhancements, team roles beyond Owner/Staff.
+- External dependencies/approvals
+  - Meta App Review for Publishing and Messaging.
+  - Calendly/Acuity OAuth apps and webhooks.
+  - Stripe account and product/prices.
+  - Render provider contract/limits; S3/CDN setup; domain and redirect URIs.
+
+API Endpoints Summary (non-exhaustive)
+- Auth: /auth/login, /auth/oauth/callback, /auth/logout
+- Business/Team: /business, /business/services, /teams, /users/me
+- Brand Kit: /brand-kit, /media/upload-url, /media/assets
+- Integrations: /integrations/meta/connect|status|disconnect, /integrations/calendly|acuity/connect|status, /integrations/stripe
+- Availability/Booking: /availability?serviceId=, /bookings (webhook receiver + GET)
+- Templates/Projects: /templates, /video-projects, /video-projects/:id
+- Render: /render-jobs, /render-jobs/:id/stream (SSE)
+- Publish/Schedule: /publish-jobs, /schedule
+- Messaging: /webhooks/meta/messages, /conversations, /messages, /assistant/settings, /assistant/test
+- Links: /links (shorten), /qr
+- Analytics: /events (ingest), /analytics/dashboard, /analytics/video/:id
+- Settings/Billing: /settings, /plans, /billing/checkout, /billing/portal
+- Compliance: /consent-logs, /data-export, /data-delete
+
+Acceptance Criteria Highlights
+- A new user can complete onboarding and generate 3 drafts in ≤15 minutes on median network.
+- One video can be published to IG/FB successfully within the first session; failures show actionable retry with permission reconnect flow.
+- A DM to the connected IG/FB account receives an automated reply with a working, tracked booking link; a booking created in Calendly/Acuity appears in the app with correct attribution.
+- Calendar shows scheduled and published states; drag-drop reschedules persist.
+- Dashboard shows appointments booked this month and funnel metrics; events stream is reliable.
+- Accessibility: keyboard navigable onboarding and editor; captions on by default.
+
+Risk/Mitigation Notes
+- Meta App Review timing: parallelize build of non-messaging flows; provide sandbox test switch and mocks.
+- Render provider reliability: implement fallback provider and clear user-facing guidance.
+- Token and webhook brittleness: robust refresh/retry, idempotent webhooks, dead-letter queues, and backfills.
+- Data privacy in DMs/bookings: consent logs, opt-outs, configurable retention.
+
+This task plan is scoped to deliver the shortest path to “Publish first video + Book first appointment,” with guardrails, resilience, and clear post-MVP extensions.

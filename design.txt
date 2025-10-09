@@ -1,0 +1,217 @@
+Below is a concise, end-to-end frontend design proposal tailored to the PRD, focused on getting users to their first published promo and first booked appointment fast.
+
+Product principles for UI
+- Speed to value: Everything pushes toward “Publish first video + get first booking” within 30 minutes.
+- Guardrails over freedom: Template-first, opinionated defaults, safe areas, and auto-formats.
+- One connected flow: Creation → Posting → DM-to-Booking → Analytics, with clear handoffs.
+- Quiet power: Advanced options tucked away; starter path is a straight line.
+
+Information architecture
+Primary navigation (left rail)
+- Home (Dashboard)
+- Create (Video)
+- Schedule
+- Inbox (DM)
+- Bookings
+- Analytics
+- Library (Brand Kit, Templates, Media)
+- Settings (Business, Integrations, Billing, Team)
+
+Global elements
+- Top bar: Business switcher, plan/usage, help, notifications, profile.
+- Persistent “30-Minute Launch” checklist banner until first publish + booking.
+
+First-run and onboarding
+Goal: Under 10 minutes to complete; under 15 minutes to first draft videos.
+
+1) Welcome screen
+- A/B: “Guided 30-minute Launch” vs “Explore first” (default guided).
+- Progress bar with milestones: Profile → Social → Booking → Brand → Offers → Generate.
+
+2) Step 1: Business profile (2 minutes)
+- Fields: category, services (top 3), hours, location.
+- “Smart defaults” via category presets. Inline examples.
+
+3) Step 2: Connect social (2 minutes)
+- Meta connect card for FB/IG (primary in MVP). Clear benefits list.
+- State: Connected, Needs permission, Retry. Test publish sandbox toggle.
+
+4) Step 3: Booking integration (3 minutes)
+- Calendly/Acuity OAuth cards. Live availability preview panel.
+- Services mapping: “Haircut (service) → 45 min (Calendly event type)”.
+- Confirmation and reminder defaults applied with editable copy.
+- Test button: “Open booking link” to verify flow (in modal).
+
+5) Step 4: Brand kit (2 minutes)
+- Upload logo, pick colors, select font pairing.
+- Brand color auto-preview on video frames. Accessibility contrast meter.
+
+6) Step 5: Offers and CTAs (1 minute)
+- Choose one kick-off offer template per vertical. Example copy prefilled.
+- CTA defaults: Book now → Booking link. Optional deposit link input.
+
+7) Step 6: Generate first set
+- “Generate 3 video concepts” button with render progress steps (Script → Scenes → VO/Music → Render).
+- Skeleton previews. Drafts in ≤3 minutes target.
+- If provider issues: automatic fallback with notice but no action required.
+
+Post-onboarding success screen
+- Carousel of 3 drafts with “Pick 1 to refine” primary action.
+- Secondary: “Schedule all 3 for this month”.
+
+Create: video generation and light editor
+Template gallery
+- By industry tiles (12+ verticals). Each shows runtime, tone, typical hooks.
+- “Quick Start” surface: “Best pick for your vertical today” with seasonal hook.
+
+Concept screen
+- Left: Variation selector (1–3). Click to swap.
+- Center: Live preview with platform frame overlays (safe text regions).
+- Right: Controls (only the essentials):
+  - Copy buckets: Hook, Body, Offer, CTA. Toggle A/B copy per bucket.
+  - Brand lock: Colors, logo position presets, caption style.
+  - Format: 9:16 primary; auto-derive 1:1 and 16:9.
+  - Subtitles: On by default; style presets; language; VO voice select.
+  - Music selector: Auto; swap with 3 curated options; loudness normalization on.
+- Compliance: AI voiceover disclosure toggle and preview placement.
+
+CTA end-card micro-builder
+- Choose layout (logo + CTA + QR optional).
+- Booking link auto-insert; customizable short link; UTM preset builder.
+- Test link opens booking modal preview with real availability.
+
+Render queue UI
+- Pinned status bar with steps and ETA. Cancel/Retry provider guidance.
+- Post-render actions: Publish now, Schedule, Export, Download.
+
+Scheduling and publishing
+Publishing panel
+- One-click publish to IG Reels/FB with meta fields: caption, hashtags, location.
+- Best-time suggestions (static heuristics for MVP).
+- “Also export” toggles for TikTok/YouTube (with download or Buffer/Hootsuite).
+
+Calendar view
+- Weekly and monthly views. Drag-and-drop reschedule.
+- Cards show thumbnail, platform badge, status (Scheduled, Published, Failed).
+- Usage meter: “4/4 videos used” for plan; upsell to add-ons.
+
+Posting states
+- Clear toasts and inline retries on API errors.
+- “Meta permission expired” banner with reconnect CTA.
+
+Inbox (DM) for IG/FB
+Purpose: Triage, transparency, and human handoff.
+
+DM list pane
+- Conversations sorted by last activity. Labels: New, Bot-handled, Needs handoff.
+
+Conversation pane
+- Chat transcript with bot tags and recognized intents (price, availability, hours).
+- Suggested quick replies: “Send booking link”, “Answer price”, “Handoff”.
+- Booking insert button opens side panel with live availability; inserts tailored link.
+- Business hours awareness: “Bot paused, you’re after-hours” indicator with toggle.
+
+Assistant setup (Settings > Messaging)
+- Intents enabled toggles, tone slider (formal ↔ friendly), greeting, hours.
+- Compliance: Opt-in explanation, footer disclaimers toggle per platform rules.
+- Test console: Simulate “Do you have availability Friday?” and see response with slots.
+
+Bookings
+Overview
+- Today’s appointments, new bookings this week, no-show rate (if available).
+- Filter by service.
+
+Booking detail panel
+- Source attribution: Video → Channel → DM/Link.
+- Actions: Resend confirmation, reschedule, cancel, mark no-show.
+- Contact details with opt-in status tags.
+
+Analytics
+Home (Dashboard)
+- North-star tile: Appointments booked this month; sparkline vs last month.
+- Funnel: Views → Click/DM → Booked; conversion rate trend; per-platform slices.
+- Top videos: Cards with CTR, bookings, revenue proxy (if available).
+- Cadence tracker: “This month: 3/4 published” with next recommended publish time.
+- Alerts: Rendering failures, posting errors, DM permission issues.
+
+Video details view
+- Thumbnail, caption, published platforms, status.
+- Per-platform metrics; DM starts; bookings; conversion.
+- Copy A/B performance; template benchmarking vs category peers.
+
+Library
+- Brand Kit: Logos, colors, fonts, lower-thirds, subtitle styles. Lock options on.
+- Offers: Saved offer snippets; seasonal calendar with suggested offers.
+- Media: Uploaded clips, licensed stock; AI VO settings.
+- Templates: Saved customizations; “Performing best” badges.
+
+Settings and billing
+- Business profile, hours, services mapping.
+- Integrations: Meta, Calendly/Acuity, Buffer/Hootsuite, Stripe.
+- Plan and usage: Starter vs Pro features; upsell nudges at point-of-need.
+- Team roles: Owner, Staff (RBAC).
+- Compliance and privacy: Data retention, consent logs, downloads.
+
+Key flows mapped to KPIs
+- Time-to-first-video ≤15 min: Guided onboarding → Immediate 3 draft concepts → Single-screen light edits → One-click publish.
+- Video-to-appointment conversion: CTA end-card builder with tracked booking links, DM assistant auto-on with availability, live time-slot previews, 60s booking flow.
+- Cadence adherence: Calendar nudges, “Weekly Playbook” suggestions, content quota meter, notification reminders.
+- Retention: Weekly email digest, dashboard wins, template recommendations, low-friction re-publish of top performers.
+
+States, guidance, and resilience
+- Empty states: Friendly mock content and a “Make my first promo” primary CTA.
+- Skeleton loaders and render progress with fallback provider messages.
+- Error banners with tight actions: Reconnect, Retry render, Contact support.
+- Undo for destructive actions (deletes, unschedules).
+- Accessibility: High-contrast palette, keyboard flows, captions on by default.
+
+Instrumentation (front-end events)
+- Onboarding step_start/complete; time per step; abandonment points.
+- Template_select, render_start/complete/error; provider_used.
+- Publish_attempt/success/fail; schedule_create/update.
+- DM intent_detected; bot_reply_sent; handoff_initiated; booking_link_sent.
+- Booking_start/complete; booking_fail_reason.
+- Analytics_viewed; export_csv.
+- Billing_upgrade_downgrade.
+
+Visual design direction
+- Clear, friendly SMB tone; bold primary color; rounded corners; ample spacing.
+- Information density balanced with obvious hierarchy; strong empty state illustrations.
+- Iconography for platforms and statuses; clear plan gating labels.
+
+Responsive strategy
+- Desktop-first for creation and analytics.
+- Mobile-friendly for approvals, Inbox, basic scheduling tweaks, and viewing metrics.
+
+Component highlights
+- Multi-format preview switcher with safe-area overlays.
+- CTA end-card builder with live booking link test.
+- Availability mini-widget embedded in DM/test and booking side panels.
+- Calendar with drag-drop and status chips.
+- Conversation view with intent chips and suggested replies.
+- Usage/Quota pill with contextual upsell.
+
+Compliance touches
+- AI-disclosure toggle shown in preview.
+- Consent footers in DMs; opt-out handling indicators.
+- Rate-limit feedback for messaging; real-time status banners when APIs degrade.
+
+Starter vs Pro gating
+- Starter: Meta scheduler only, 4 videos/month, 1 booking integration, basic analytics.
+- Pro extras flagged inline: DM assistant, multi-format batch exports, advanced analytics. Tooltips show value; click opens upgrade flow.
+
+30-minute launch checklist (persistent until completed)
+- Connect IG/FB
+- Connect Calendly/Acuity
+- Generate first video
+- Publish to IG/FB
+- Send yourself a test DM → receive booking CTA
+- Get first booking
+
+Deliverables to hand off to engineering
+- Low-fidelity wireframes for: Onboarding flow, Create/Editor, Publish/Schedule, Inbox, Bookings, Dashboard.
+- Component library spec: Buttons, chips, tabs, cards, badges, toasts, loaders, calendar, list, modal, side panel, form inputs, tag pills.
+- Interaction specs: Render progress SSE, posting retries, DM live update states.
+- Accessibility checklist and keyboard navigation map.
+
+This design aligns tightly to the PRD’s MVP scope and success metrics by making the path to publish and book unmistakably simple, surfacing just-in-time setup, and connecting creation to measurable outcomes in one flow.

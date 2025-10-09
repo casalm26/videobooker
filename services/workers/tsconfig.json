@@ -1,0 +1,14 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "rootDir": "src",
+    "composite": true,
+    "tsBuildInfoFile": "./dist/.tsbuildinfo",
+    "types": ["node"],
+    "paths": {
+      "@videobooker/shared/*": ["../../packages/shared/src/*"]
+    }
+  },
+  "include": ["src/**/*.ts"],
+  "exclude": ["dist", "node_modules"]
+}
