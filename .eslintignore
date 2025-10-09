@@ -1,0 +1,8 @@
+node_modules
+*.config.js
+*.config.cjs
+dist
+build
+coverage
+apps/web/.next
+apps/web/out

@@ -11,7 +11,7 @@
 ## Tooling & Infra
 - Package manager: pnpm workspaces with `pnpm-workspace.yaml`.
 - TypeScript project references: root `tsconfig.base.json`, package-level `tsconfig.json` extending base.
-- Linting/Formatting: ESLint + Prettier; shared configs exported from `packages/shared/eslint-config`.
+- Linting/Formatting: ESLint + Prettier via root config; Husky + lint-staged enforce checks on commits and `pnpm lint`/`pnpm typecheck` on push.
 - Testing: Jest for unit, Playwright for E2E; coverage thresholds enforced via root `package.json` scripts.
 - Environment: Docker Compose orchestrating app containers + MongoDB + Redis; `.env.example` tracked per workspace.
 
