@@ -9,14 +9,15 @@
 - `packages/ui` – Component library built with Radix UI primitives, tokens, and storybook docs.
 
 ## Tooling & Infra
-- Package manager: pnpm workspaces with `pnpm-workspace.yaml`.
+- Package manager: npm workspaces managed from the root `package.json`.
 - TypeScript project references: root `tsconfig.base.json`, package-level `tsconfig.json` extending base.
-- Linting/Formatting: ESLint + Prettier via root config; Husky + lint-staged enforce checks on commits and `pnpm lint`/`pnpm typecheck` on push.
+- Linting/Formatting: ESLint + Prettier via root config; Husky + lint-staged enforce checks on commits and `npm run lint`/`npm run typecheck` on push.
+- Config: shared `packages/shared/src/config` module wraps `.env` parsing with Zod; workspace `.env.example` files document required keys.
 - Testing: Jest for unit, Playwright for E2E; coverage thresholds enforced via root `package.json` scripts.
 - Environment: Docker Compose orchestrating app containers + MongoDB + Redis; `.env.example` tracked per workspace.
 
 ## Pipelines
-- `lint` – runs ESLint across all workspaces via `pnpm lint`.
+- `lint` – runs ESLint across all workspaces via `npm run lint`.
 - `typecheck` – executes `tsc --noEmit` with project references.
 - `test` – orchestrates jest suites in parallel with coverage gating.
 - `test:e2e` – launches services and runs Playwright specs tagged per epic.

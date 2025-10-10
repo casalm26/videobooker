@@ -1,4 +1,8 @@
+import { loadEnv } from '@videobooker/shared';
+import { config as loadEnvFile } from 'dotenv';
 import express from 'express';
+
+loadEnvFile();
 
 export function createServer() {
   const app = express();
@@ -11,8 +15,9 @@ export function createServer() {
 }
 
 if (require.main === module) {
+  const env = loadEnv();
   const app = createServer();
-  const port = process.env.PORT ?? 4000;
+  const port = env.PORT;
   app.listen(port, () => {
     // eslint-disable-next-line no-console
     console.log(`API server listening on port ${port}`);

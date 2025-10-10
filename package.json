@@ -2,18 +2,26 @@
   "name": "videobooker",
   "private": true,
   "version": "0.0.0",
-  "packageManager": "pnpm@8.15.0",
+  "workspaces": {
+    "packages": [
+      "apps/*",
+      "services/*",
+      "packages/*",
+      "tests/*"
+    ]
+  },
   "scripts": {
-    "dev": "pnpm --filter @videobooker/web dev",
-    "dev:api": "pnpm --filter @videobooker/api dev",
-    "dev:workers": "pnpm --filter @videobooker/workers dev",
-    "lint": "pnpm -r --if-present lint",
-    "test": "pnpm -r --if-present test",
-    "test:e2e": "pnpm --filter @videobooker/e2e test:e2e",
-    "build": "pnpm -r --if-present build",
-    "typecheck": "pnpm exec tsc --build tsconfig.json",
+    "dev:web": "npm run dev --workspace=@videobooker/web",
+    "dev:api": "npm run dev --workspace=@videobooker/api",
+    "dev:workers": "npm run dev --workspace=@videobooker/workers",
+    "lint": "npm run lint --workspaces --if-present",
+    "test": "npm run test --workspaces --if-present",
+    "test:e2e": "npm run test:e2e --workspace=@videobooker/e2e",
+    "build": "npm run build --workspaces --if-present",
+    "typecheck": "npm run --workspaces --if-present typecheck",
     "db:up": "docker compose up mongo -d",
     "db:down": "docker compose down",
+    "db:seed": "node scripts/db/seed.js",
     "prepare": "husky install"
   },
   "devDependencies": {
@@ -31,7 +39,7 @@
   },
   "lint-staged": {
     "*.{ts,tsx,js,jsx}": [
-      "pnpm exec eslint --max-warnings=0"
+      "npx eslint --max-warnings=0"
     ]
   }
 }

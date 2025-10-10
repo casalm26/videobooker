@@ -1,18 +1,18 @@
 Below is a phased, prioritized task list to implement the PRD end-to-end. It’s organized as epics with concrete tasks, dependencies, and gating aligned to “Publish first video + get first booking fast.”
 
 Monorepo Skeleton (pre-Phase 0)
-- Decide on package manager (npm workspaces vs. pnpm) and initialize the root `package.json` with workspace globs for `apps/*`, `services/*`, and `packages/*`.
-- Generate baseline TypeScript configs (`tsconfig.base.json`, per-package references) and share ESLint/Prettier settings through `packages/shared/config/`.
-- Scaffold empty folders for `apps/web`, `services/api`, `services/workers`, `packages/shared`, and `packages/db`, each with placeholder README and entry files.
-- Add Docker Compose with MongoDB service, seed script hooks, and convenience scripts (`pnpm db:up`, `pnpm db:seed`).
-- Configure CI pipeline skeleton to run lint, unit test, and build commands against the blank workspace to ensure wiring works before Phase 0 features land.
+- [x] Decide on package manager (npm workspaces) and initialize the root `package.json` with workspace globs for `apps/*`, `services/*`, and `packages/*`.
+- [x] Generate baseline TypeScript configs (`tsconfig.base.json`, per-package references) and share ESLint/Prettier settings through root config.
+- [x] Scaffold empty folders for `apps/web`, `services/api`, `services/workers`, `packages/shared`, and `packages/db`, each with placeholder README and entry files.
+- [x] Add Docker Compose with MongoDB service, seed script hooks, and convenience scripts (`npm run db:up`, `npm run db:seed`).
+- [x] Configure CI pipeline skeleton to run lint, unit test, and build commands against the blank workspace to ensure wiring works before Phase 0 features land.
 
-Phase 0: Foundations and Platform
+- Phase 0: Foundations and Platform
 - Tech stack decisions and setup
-  - Frontend: React/Next (or SPA + router), state (React Query/Zustand), design system (component library), i18n scaffold, feature flags.
-  - Backend: Node/TypeScript (or Go), REST/GraphQL, Postgres, Redis, S3 + CDN, queue (SQS), server-sent events (SSE) or WebSocket.
-  - CI/CD: Pipelines, previews, trunk-based workflow, release channels.
-  - Secrets management, environment configs, per-tenant data isolation.
+  - [ ] Frontend: React/Next (or SPA + router), state (React Query/Zustand), design system (component library), i18n scaffold, feature flags.
+  - [ ] Backend: Node/TypeScript (or Go), REST/GraphQL, Postgres, Redis, S3 + CDN, queue (SQS), server-sent events (SSE) or WebSocket.
+  - [ ] CI/CD: Pipelines, previews, trunk-based workflow, release channels.
+  - [x] Secrets management, environment configs, per-tenant data isolation (workspace `.env.example` files + typed loader in `packages/shared/src/config`).
 - Auth and RBAC
   - Email/password + OAuth (Google). Session/JWT strategy. Passwordless optional.
   - Team roles: Owner, Staff (permissions map).

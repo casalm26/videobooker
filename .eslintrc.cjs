@@ -22,6 +22,19 @@ module.exports = {
     react: {
       version: 'detect',
     },
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.jsx', '.ts', '.tsx'],
+      },
+    },
+    'import/core-modules': [
+      '@videobooker/shared',
+      '@videobooker/db',
+      '@videobooker/ui',
+      '@videobooker/web',
+      '@videobooker/workers',
+      '@videobooker/e2e',
+    ],
   },
   ignorePatterns: ['dist', 'build', '.next', 'node_modules', '*.config.js', '*.config.cjs'],
   rules: {
@@ -38,13 +51,12 @@ module.exports = {
   },
   overrides: [
     {
-      files: ['apps/web/**/*.{ts,tsx}', 'packages/ui/**/*.{ts,tsx}'],
+      files: ['packages/ui/**/*.{ts,tsx}'],
       plugins: ['react', 'react-hooks', 'jsx-a11y'],
       extends: [
         'plugin:react/recommended',
         'plugin:react-hooks/recommended',
         'plugin:jsx-a11y/recommended',
-        'next/core-web-vitals',
       ],
       parserOptions: {
         ecmaFeatures: {

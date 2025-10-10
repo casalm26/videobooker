@@ -1,3 +1,5 @@
+export * from './config';
+
 export const name = 'shared';
 
 export function assert(condition: unknown, message: string): asserts condition {

@@ -13,8 +13,11 @@
     "noEmit": true,
     "baseUrl": ".",
     "paths": {
+      "@videobooker/shared": ["packages/shared/src/index.ts"],
       "@videobooker/shared/*": ["packages/shared/src/*"],
+      "@videobooker/db": ["packages/db/src/index.ts"],
       "@videobooker/db/*": ["packages/db/src/*"],
+      "@videobooker/ui": ["packages/ui/src/index.ts"],
       "@videobooker/ui/*": ["packages/ui/src/*"]
     }
   },

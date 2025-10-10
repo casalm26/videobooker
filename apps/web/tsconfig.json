@@ -4,10 +4,28 @@
     "jsx": "preserve",
     "baseUrl": ".",
     "paths": {
-      "@videobooker/shared/*": ["../../packages/shared/src/*"],
-      "@videobooker/ui/*": ["../../packages/ui/src/*"]
-    }
+      "@videobooker/shared/*": [
+        "../../packages/shared/src/*"
+      ],
+      "@videobooker/ui/*": [
+        "../../packages/ui/src/*"
+      ]
+    },
+    "allowJs": true,
+    "incremental": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ]
   },
-  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx"],
-  "exclude": ["node_modules"]
+  "include": [
+    "next-env.d.ts",
+    "**/*.ts",
+    "**/*.tsx",
+    ".next/types/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
 }

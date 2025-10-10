@@ -1,5 +1,4 @@
 node_modules
-pnpm-lock.yaml
 packages/**/dist
 services/**/dist
 apps/**/.next
@@ -8,3 +7,5 @@ coverage
 .DS_Store
 dist
 .env*
+!.env.example
+!**/.env.example

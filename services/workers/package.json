@@ -12,7 +12,7 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@videobooker/shared": "workspace:*",
+    "@videobooker/shared": "file:../../packages/shared",
     "bullmq": "5.12.6",
     "dotenv": "16.4.5",
     "ioredis": "5.4.1"

@@ -12,8 +12,8 @@
     "typecheck": "tsc --project tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@videobooker/db": "workspace:*",
-    "@videobooker/shared": "workspace:*",
+    "@videobooker/db": "file:../../packages/db",
+    "@videobooker/shared": "file:../../packages/shared",
     "cors": "2.8.5",
     "dotenv": "16.4.5",
     "express": "4.19.2",
