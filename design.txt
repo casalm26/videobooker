@@ -6,6 +6,18 @@ Product principles for UI
 - One connected flow: Creation → Posting → DM-to-Booking → Analytics, with clear handoffs.
 - Quiet power: Advanced options tucked away; starter path is a straight line.
 
+Auth & RBAC architecture snapshot
+- AuthN/AuthZ via dedicated `auth` module in `services/api`, using express middleware and JWT access tokens (15 min) + refresh tokens (14 day) backed by Redis for revocation.
+- Primary signin: email/password with Argon2, plus Google OAuth 2.0; passwordless email links flagged for Phase 2.
+- Role model: Owner (full access), Staff (limited to content + messaging), Billing Admin (billing surface only). Multi-business tenancy enforced with `business_id` scoping on every query.
+- Session middleware attaches `request.context` (user id, business id, roles, feature flags) consumed by downstream handlers and worker jobs.
+
+Data modeling decisions (Mongoose)
+- Core collections: `users`, `businesses`, `team_memberships`, `integrations`, `service_catalog`, `offers`, `templates`, `media_assets`, `video_projects`, `render_jobs`, `publish_jobs`, `bookings`, `conversations`, `messages`, `intents`, `analytics_events`, `consent_logs`.
+- Each document includes `tenantKey` (`businessId`) and `planSnapshot` for usage metering; time-series metrics (analytics events) stored in append-only collection with nightly rollups.
+- Strong consistency for transactional flows (booking, render) via Mongo transactions and outbox pattern to SQS-like queue for worker handoff.
+- Index strategy: compound indexes on `{ businessId, status, updatedAt }` for high-volume collections (jobs, bookings) plus TTL indexes on short-lived tokens.
+
 Information architecture
 Primary navigation (left rail)
 - Home (Dashboard)

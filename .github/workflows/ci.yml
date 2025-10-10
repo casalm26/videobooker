@@ -7,7 +7,7 @@ on:
       - main
 
 jobs:
-  setup:
+  build-and-test:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -18,5 +18,19 @@ jobs:
       - run: npm install
       - run: npm run lint
       - run: npm run typecheck
-      - run: npm run test -- --passWithNoTests
-      - run: npm run build
+      - run: npm run test
+      - run: npm run build --if-present
+      - name: Upload typecheck cache
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: tsbuildinfo
+          path: '**/*.tsbuildinfo'
+          if-no-files-found: ignore
+      - name: Upload lint results
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: lint-report
+          path: .eslintcache
+          if-no-files-found: ignore

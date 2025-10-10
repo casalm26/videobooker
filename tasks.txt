@@ -12,6 +12,9 @@ Monorepo Skeleton (pre-Phase 0)
   - [x] Frontend: React/Next, React Query + Zustand, monorepo UI package, Storybook to follow; App Router with feature flags scaffolded via shared config.
   - [x] Backend: Node/TypeScript + Express, Mongo via Mongoose, Redis queues, REST APIs, SSE for progress, S3 + CDN storage adapters.
   - [ ] CI/CD: Pipelines, previews, trunk-based workflow, release channels.
+    - [x] Node 20 GitHub Action running lint, typecheck, test, build with cached installs and artifacts.
+    - [ ] Preview environments (web on Vercel, API/Workers on Render) with per-PR deploys.
+    - [ ] Trunk-based release cadence, semantic versioning, and changelog automation.
   - [x] Secrets management, environment configs, per-tenant data isolation (workspace `.env.example` files + typed loader in `packages/shared/src/config`).
 - Auth and RBAC
   - [ ] Email/password + OAuth (Google). Session/JWT strategy. Passwordless optional.
@@ -24,8 +27,8 @@ Monorepo Skeleton (pre-Phase 0)
   - [ ] Chips, tabs, cards, badges, toasts, loaders, calendar, list, modal, side panel, form controls, pill tags, usage/quota pill.
   - [ ] Theming, high-contrast theme variants, typography scale, platform/status iconography.
 - Observability/ops foundations
-  - Structured logging, metrics, tracing. Error reporting (Sentry).
-  - Rate limiters and circuit breakers for external APIs.
+  - [ ] Structured logging, metrics, tracing. Error reporting (Sentry).
+  - [ ] Rate limiters and circuit breakers for external APIs.
 
 Phase 1: Onboarding + 30-Minute Launch Checklist
 - UI scaffolding

@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Stack } from '@videobooker/ui';
 
 import { useBusiness } from '../lib/hooks/useBusiness';
