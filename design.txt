@@ -187,9 +187,52 @@ Instrumentation (front-end events)
 - Billing_upgrade_downgrade.
 
 Visual design direction
-- Clear, friendly SMB tone; bold primary color; rounded corners; ample spacing.
-- Information density balanced with obvious hierarchy; strong empty state illustrations.
-- Iconography for platforms and statuses; clear plan gating labels.
+- Warm, steady presence that feels like a trusted advisor who has been on the shop floor.
+- Hero surfaces lean into calm teal gradients anchored by the primary Harbor Teal; support colors add seasonal energy without overwhelming.
+- Rounded rectangles with softened 12px corners and shadow tokens that feel like late-afternoon storefront light instead of cold SaaS neutrals.
+- Information density controlled by a 4pt grid and typographic scale that elevates key numbers with color-backed badges.
+- Empty states use editorial illustration of real-world service pros (salon chair, yoga studio, auto bay) with brand colors and invitational copy.
+- Iconography is line-first with filled highlights in the accent Clay Spark; plan gating chips reuse the same accent so upgrade prompts feel intentional.
+
+Brand identity & guidelines
+Brand essence
+- “Neighborhood Ally”: calm, practical, and respectful—meets owners where they are and gently lifts them toward polished marketing.
+- Promise: “We’ll walk with you from blank slate to booked calendar—at your pace, with tools that feel made for your shop.”
+- Emotional anchors: Reassurance, steady progress, and pride in presenting your business well.
+
+Tone of voice
+- Conversational and plain-spoken with warm encouragement; short, active sentences that celebrate meaningful wins (“Nice—your IG reel is queued.”).
+- Never snarky or overly playful; respect time and talent of owners. Replace jargon with relatable analogies (“Think of your booking link as the open sign—keep it visible.”).
+- UX microcopy always pairs action with outcome (“Publish now → DM replies auto-primed with your opening hours.”).
+
+Color palette
+- Primary: `#1E7A78` Harbor Teal—used for CTAs, progress, and key highlights.
+- Secondary: `#FF8A4C` Clay Spark—used for promotional offers, upgrade nudges, and live status.
+- Support: `#6BC3B7` Harbor Mist for success states, `#FFD166` Sun Docket for warnings, `#EAF7F5` Teal Wash for backgrounds.
+- Neutral stack: `#101223` Ink text, `#3B3F5C` secondary text, `#5F6585` tertiary, `#D5D7E7` dividers, `#F8F9FC` canvas.
+- Gradients: Primary hero gradient runs `#1E7A78 → #2C9290`; apply only to top-level hero and onboarding welcome card.
+
+Typography
+- Display headlines: “Space Grotesk” 600 with `Inter` fallback—bold but friendly; used for hero stats and feature callouts.
+- Body copy: “Inter” 400/500 for readability at small sizes; minimum 16px base, 24px line height.
+- Numeric emphasis uses tabular figures (enable via CSS font-feature-settings) so analytics tiles line up.
+- Button labels all caps at 14px, tracking 2%, to differentiate actionable touchpoints from body copy.
+
+Layout & components
+- Use an 8pt base grid with a 24px rhythm for section padding; card gutters locked to 16px.
+- Card architecture: top badge for status, title, supporting metric, action footer; avoid floating CTAs.
+- Data-heavy screens anchor content left with a 320px contextual rail for filters or summaries; right-hand panels reserved for AI-generated insights.
+- Keep modal max-width to 720px, with progressive disclosure instead of long single modals.
+
+Imagery & illustration
+- Photography: candid, in-action shots of owners in their environment; avoid stocky smiles. Tone-correct using the Teal Wash overlay at 20% to integrate with UI.
+- Illustration: vector line work with broad color fills from Harbor Mist and Clay Spark; ensure each gist matches a persona (e.g., barber, Pilates coach, auto detailer).
+- Video thumbnails overlay brand shapes (rounded frame corners + diagonal Harbor Teal band) to create immediate recognition across platforms.
+
+Motion & interaction
+- Motion language is “purposeful glide”: 160ms ease-out for primary transitions, 80ms hover/focus states; avoid bounce.
+- Progress-related animations (rendering, publishing) use a shimmer gradient sweep across Harbor Teal backgrounds; never loop more than twice to avoid anxiety.
+- Success checkmarks scale from 0.8 to 1.0 with Harbor Mist flash; failure states shake horizontally 4px with Clay Spark outline pulse.
 
 Responsive strategy
 - Desktop-first for creation and analytics.
