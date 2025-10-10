@@ -19,15 +19,14 @@ Monorepo Skeleton (pre-Phase 0)
 - Auth and RBAC
   - [ ] Email/password + OAuth (Google). Session/JWT strategy. Passwordless optional.
   - [ ] Team roles: Owner, Staff (permissions map).
-  - [ ] Business switcher: multi-business tenancy model.
-- Data modeling (DB)
+- Data modeling (DB) in Airtable
   - [ ] Business, User, TeamMembership, Plan/Usage, BrandKit, Integration (Meta, Calendly, Acuity, Buffer/Hootsuite, Stripe), ServiceCatalog, Offer, Template, MediaAsset, VideoProject, RenderJob, PublishJob, Booking, Conversation, Message, Intent, AnalyticsEvent, ConsentLog.
 - Design system and components
   - [x] Theme tokens, button, and layout primitives seeded in `packages/ui`.
   - [ ] Chips, tabs, cards, badges, toasts, loaders, calendar, list, modal, side panel, form controls, pill tags, usage/quota pill.
   - [ ] Theming, high-contrast theme variants, typography scale, platform/status iconography.
 - Observability/ops foundations
-  - [ ] Structured logging, metrics, tracing. Error reporting (Sentry).
+  - [ ] Structured logging, metrics, tracing.
   - [ ] Rate limiters and circuit breakers for external APIs.
 
 Phase 1: Onboarding + 30-Minute Launch Checklist

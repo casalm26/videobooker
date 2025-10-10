@@ -212,12 +212,6 @@ Color palette
 - Neutral stack: `#101223` Ink text, `#3B3F5C` secondary text, `#5F6585` tertiary, `#D5D7E7` dividers, `#F8F9FC` canvas.
 - Gradients: Primary hero gradient runs `#1E7A78 → #2C9290`; apply only to top-level hero and onboarding welcome card.
 
-Typography
-- Display headlines: “Space Grotesk” 600 with `Inter` fallback—bold but friendly; used for hero stats and feature callouts.
-- Body copy: “Inter” 400/500 for readability at small sizes; minimum 16px base, 24px line height.
-- Numeric emphasis uses tabular figures (enable via CSS font-feature-settings) so analytics tiles line up.
-- Button labels all caps at 14px, tracking 2%, to differentiate actionable touchpoints from body copy.
-
 Layout & components
 - Use an 8pt base grid with a 24px rhythm for section padding; card gutters locked to 16px.
 - Card architecture: top badge for status, title, supporting metric, action footer; avoid floating CTAs.

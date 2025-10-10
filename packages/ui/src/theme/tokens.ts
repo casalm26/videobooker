@@ -43,3 +43,10 @@ export const typography = {
   buttonLetterSpacing: '0.12em',
   buttonFontSize: '0.875rem',
 } as const;
+
+export const breakpoints = {
+  // tablet breakpoint matches first responsive collapse
+  tablet: 768,
+  // desktop breakpoint is the point where multi-column layout is restored
+  desktop: 1200,
+} as const;
