@@ -1,12 +1,12 @@
 # Monorepo Outline
 
 ## Workspaces
-- `apps/web` – Next.js frontend; React Query for data fetching, Zustand for client state, Playwright smoke flows.
+- `apps/web` – Next.js frontend; React Query provider + business context, Zustand for client state, Playwright smoke flows.
 - `services/api` – Express + TypeScript API; module folders (`business`, `media`, `schedule`) each with router, controller, service, DAL.
 - `services/workers` – BullMQ (Redis) job runners handling renders, publish queue, DM ingestion, analytics sync.
 - `packages/shared` – Utilities shared across surfaces (config loader, logging, feature flag client, error types).
 - `packages/db` – Mongoose models, validation schemas, seed scripts, migration utilities.
-- `packages/ui` – Component library built with Radix UI primitives, tokens, and storybook docs.
+- `packages/ui` – Component library with foundational tokens, layout primitives, and component docs (Storybook planned).
 
 ## Tooling & Infra
 - Package manager: npm workspaces managed from the root `package.json`.

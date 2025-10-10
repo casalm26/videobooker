@@ -1,5 +1,7 @@
 import type { ButtonHTMLAttributes, ReactNode } from 'react';
 
+import { colors, radii, spacing } from '../theme';
+
 export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   children: ReactNode;
 };
@@ -9,12 +11,13 @@ export function Button({ children, ...props }: ButtonProps) {
     <button
       {...props}
       style={{
-        padding: '0.5rem 1rem',
-        borderRadius: '0.5rem',
+        padding: `${spacing.sm} ${spacing.lg}`,
+        borderRadius: radii.md,
         border: 'none',
-        background: '#3b82f6',
-        color: '#fff',
+        background: colors.primary,
+        color: colors.text,
         cursor: 'pointer',
+        fontWeight: 600,
       }}
     >
       {children}
