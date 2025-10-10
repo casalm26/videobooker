@@ -3,6 +3,8 @@ import { ReactNode } from 'react';
 
 import { Providers } from '../lib/providers';
 
+import './globals.css';
+
 export const metadata: Metadata = {
   title: 'VideoBooker',
   description: 'Automated video marketing and bookings for local businesses.',

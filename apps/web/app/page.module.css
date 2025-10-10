@@ -1,0 +1,561 @@
+.appShell {
+  display: grid;
+  grid-template-columns: 280px 1fr;
+  min-height: 100vh;
+  background: transparent;
+}
+
+.navRail {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-lg);
+  padding: var(--space-xl) var(--space-lg);
+  background: rgba(15, 23, 42, 0.85);
+  backdrop-filter: blur(24px);
+  border-right: 1px solid var(--color-border);
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.navSection {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-sm);
+}
+
+.navLabel {
+  text-transform: uppercase;
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  letter-spacing: 0.08em;
+}
+
+.navItem {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 0.75rem;
+  border-radius: var(--radius-md);
+  color: var(--color-text-muted);
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.navItemActive {
+  background: rgba(59, 130, 246, 0.16);
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.navItem:hover {
+  background: rgba(59, 130, 246, 0.1);
+  color: var(--color-text);
+}
+
+.planCard {
+  margin-top: auto;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(145deg, rgba(59, 130, 246, 0.25), rgba(29, 78, 216, 0.35));
+  border: 1px solid rgba(59, 130, 246, 0.4);
+}
+
+.planTitle {
+  font-weight: 600;
+  margin-bottom: var(--space-sm);
+}
+
+.planUsage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.85rem;
+}
+
+.usagePill {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-xs);
+  padding: 0.3rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: rgba(34, 197, 94, 0.12);
+  color: #4ade80;
+  font-size: 0.75rem;
+  font-weight: 600;
+}
+
+.mainColumn {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  backdrop-filter: blur(10px);
+}
+
+.topBar {
+  position: sticky;
+  top: 0;
+  z-index: 10;
+  padding: var(--space-lg) var(--space-xl) var(--space-md);
+  background: rgba(7, 11, 22, 0.92);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.topBarGroup {
+  display: flex;
+  align-items: center;
+  gap: var(--space-md);
+}
+
+.businessSwitcher {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+}
+
+.businessBadge {
+  padding: 0.35rem 0.75rem;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 130, 246, 0.15);
+  color: var(--color-text);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.usageSummary {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: linear-gradient(160deg, rgba(59, 130, 246, 0.35), rgba(99, 102, 241, 0.35));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.checklistBanner {
+  margin: var(--space-md) var(--space-xl) 0;
+  padding: var(--space-lg);
+  border-radius: var(--radius-lg);
+  background: linear-gradient(120deg, rgba(59, 130, 246, 0.2), rgba(6, 182, 212, 0.15));
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+}
+
+.checklistHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-lg);
+}
+
+.progressMeta {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.85rem;
+  color: var(--color-text-muted);
+}
+
+.progressBar {
+  position: relative;
+  width: 200px;
+  height: 6px;
+  border-radius: var(--radius-pill);
+  background: rgba(148, 163, 184, 0.25);
+  overflow: hidden;
+}
+
+.progressFill {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-primary), var(--color-secondary));
+  transition: width 0.3s ease;
+}
+
+.checklistItems {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: var(--space-md);
+}
+
+.checklistItem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-sm);
+  font-size: 0.9rem;
+}
+
+.checklistItemStatus {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 600;
+}
+
+.statusComplete {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.statusCurrent {
+  background: rgba(59, 130, 246, 0.18);
+  color: var(--color-text);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+}
+
+.statusUpcoming {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--color-text-muted);
+}
+
+.contentArea {
+  padding: var(--space-xl);
+  padding-top: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xl);
+}
+
+.primaryGrid {
+  display: grid;
+  grid-template-columns: minmax(0, 2fr) minmax(0, 1fr);
+  gap: var(--space-xl);
+  align-items: start;
+}
+
+.panel {
+  background: rgba(15, 23, 42, 0.82);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: var(--space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-md);
+  box-shadow: 0 18px 40px rgba(2, 6, 23, 0.4);
+}
+
+.panelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-sm);
+}
+
+.panelTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+.panelSubtitle {
+  font-size: 0.9rem;
+  color: var(--color-text-muted);
+}
+
+.timeline {
+  display: grid;
+  gap: var(--space-md);
+}
+
+.timelineStep {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-md);
+  align-items: start;
+}
+
+.stepIndicator {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: 600;
+}
+
+.stepComplete {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.stepCurrent {
+  background: rgba(59, 130, 246, 0.2);
+  color: var(--color-text);
+  border: 1px solid rgba(59, 130, 246, 0.6);
+}
+
+.stepUpcoming {
+  background: rgba(148, 163, 184, 0.12);
+  color: var(--color-text-muted);
+}
+
+.stepContent {
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+
+.stepTitle {
+  font-weight: 600;
+}
+
+.badgeRow {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm);
+}
+
+.badge {
+  padding: 0.35rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: rgba(148, 163, 184, 0.14);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+}
+
+.previewFrame {
+  border-radius: var(--radius-md);
+  border: 1px dashed rgba(148, 163, 184, 0.35);
+  background: linear-gradient(160deg, rgba(59, 130, 246, 0.25), rgba(99, 102, 241, 0.25));
+  aspect-ratio: 9 / 16;
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.previewSafeArea {
+  position: absolute;
+  inset: 12%;
+  border: 1px dashed rgba(226, 232, 240, 0.45);
+  border-radius: var(--radius-sm);
+}
+
+.previewCopy {
+  text-align: center;
+  font-weight: 600;
+  line-height: 1.4;
+  padding: 0 var(--space-md);
+}
+
+.splitLayout {
+  display: grid;
+  gap: var(--space-lg);
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+}
+
+.copyBucket {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: rgba(22, 33, 59, 0.8);
+  border: 1px solid rgba(59, 130, 246, 0.18);
+}
+
+.bucketTitle {
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-text-muted);
+}
+
+.bucketText {
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.tableList {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.tableRow {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: var(--space-sm);
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--radius-md);
+  background: rgba(148, 163, 184, 0.08);
+  font-size: 0.9rem;
+}
+
+.metricHighlight {
+  display: grid;
+  gap: 0.2rem;
+}
+
+.metricLabel {
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+}
+
+.metricValue {
+  font-size: 1.35rem;
+  font-weight: 700;
+}
+
+.metricDelta {
+  font-size: 0.8rem;
+  color: #4ade80;
+}
+
+.platformTag {
+  padding: 0.25rem 0.5rem;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 130, 246, 0.15);
+  font-size: 0.75rem;
+}
+
+.calendarPreview {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: var(--space-sm);
+}
+
+.calendarCard {
+  padding: 0.75rem;
+  border-radius: var(--radius-md);
+  background: rgba(22, 33, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.statusChip {
+  align-self: flex-start;
+  padding: 0.2rem 0.6rem;
+  border-radius: var(--radius-pill);
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.statusScheduled {
+  background: rgba(59, 130, 246, 0.18);
+  color: var(--color-text);
+}
+
+.statusPublished {
+  background: rgba(34, 197, 94, 0.2);
+  color: #4ade80;
+}
+
+.statusNeedsAction {
+  background: rgba(239, 68, 68, 0.2);
+  color: #fca5a5;
+}
+
+.inboxList {
+  display: grid;
+  gap: var(--space-sm);
+}
+
+.inboxMessage {
+  padding: var(--space-md);
+  border-radius: var(--radius-md);
+  background: rgba(22, 33, 59, 0.8);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  display: grid;
+  gap: 0.4rem;
+}
+
+.intentChips {
+  display: flex;
+  gap: var(--space-sm);
+  flex-wrap: wrap;
+}
+
+.intentChip {
+  padding: 0.3rem 0.65rem;
+  border-radius: var(--radius-pill);
+  background: rgba(59, 130, 246, 0.18);
+  font-size: 0.75rem;
+}
+
+.analyticsGrid {
+  display: grid;
+  gap: var(--space-lg);
+}
+
+.analyticsRow {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+  gap: var(--space-lg);
+}
+
+.sparkline {
+  height: 54px;
+  border-radius: var(--radius-md);
+  background: linear-gradient(90deg, rgba(59, 130, 246, 0.2), rgba(59, 130, 246, 0));
+  position: relative;
+  overflow: hidden;
+}
+
+.sparkline::after {
+  content: '';
+  position: absolute;
+  inset: 18px 12px;
+  border-radius: var(--radius-pill);
+  border: 1px dashed rgba(148, 163, 184, 0.2);
+}
+
+.sectionDivider {
+  height: 1px;
+  background: rgba(148, 163, 184, 0.12);
+  margin: var(--space-sm) 0;
+}
+
+@media (max-width: 1200px) {
+  .appShell {
+    grid-template-columns: 220px 1fr;
+  }
+
+  .primaryGrid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 900px) {
+  .appShell {
+    grid-template-columns: 1fr;
+  }
+
+  .navRail {
+    position: sticky;
+    top: 0;
+    flex-direction: row;
+    align-items: center;
+    overflow-x: auto;
+  }
+
+  .planCard {
+    display: none;
+  }
+}
