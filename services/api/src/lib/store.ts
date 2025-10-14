@@ -61,7 +61,7 @@ export type Offer = {
 };
 
 export type VideoVariation = {
-  id: string;
+  id?: string;
   format: '9x16' | '1x1' | '16x9';
   durationSeconds: number;
   captionStyle: 'burned-in' | 'none';
