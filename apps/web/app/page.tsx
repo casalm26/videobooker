@@ -13,6 +13,7 @@ import {
   Palette,
   Share2,
 } from 'lucide-react';
+import Link from 'next/link';
 
 import { Avatar, AvatarFallback } from '../components/ui/avatar';
 import { Badge } from '../components/ui/badge';
@@ -141,9 +142,11 @@ export default function HomePage() {
               thirty minutes. Opinionated templates, connected automations, and an assistant that never forgets the follow-up.
             </p>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-              <Button size="lg" className="gap-2">
-                Start the launch checklist
-                <ArrowRight className="h-4 w-4" />
+              <Button size="lg" className="gap-2" asChild>
+                <Link href="/dashboard" className="flex items-center gap-2">
+                  Start the launch checklist
+                  <ArrowRight className="h-4 w-4" />
+                </Link>
               </Button>
               <Button variant="outline" size="lg" className="gap-2">
                 See product tour

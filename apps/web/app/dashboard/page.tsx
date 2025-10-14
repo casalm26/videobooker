@@ -1,6 +1,7 @@
 "use client";
 
 import { Button, colors, radii, spacing, typography } from '@videobooker/ui';
+import { signOut, useSession } from 'next-auth/react';
 
 import { useBusiness } from '../../lib/hooks/useBusiness';
 
@@ -102,10 +103,12 @@ const capsuleStyle = {
 } as const;
 
 export default function DashboardPage() {
+  const { data: session } = useSession();
   const { activeBusinessId, setActiveBusinessId } = useBusiness();
 
   const completedItems = checklistItems.filter((item) => item.complete).length;
   const completionPercent = Math.round((completedItems / checklistItems.length) * 100);
+  const displayName = session?.user?.name ?? 'VideoBooker HQ';
 
   return (
     <main
@@ -150,7 +153,7 @@ export default function DashboardPage() {
                 fontWeight: 600,
               }}
             >
-              VideoBooker HQ
+              {displayName}
             </h2>
           </div>
           <p style={{ margin: 0, opacity: 0.85 }}>
@@ -222,21 +225,32 @@ export default function DashboardPage() {
               Switch
             </Button>
           </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: 'column',
-              gap: spacing.xs,
-              fontSize: '0.9rem',
-              color: colors.textSubtle,
-            }}
-          >
-            <span>Plan · Starter (4 videos / month)</span>
-            <span>Usage · 3 published · 1 queued</span>
-            <Button style={{ alignSelf: 'flex-start', paddingInline: spacing.md }}>Upgrade plan</Button>
-          </div>
+        <div
+          style={{
+            display: 'flex',
+            flexDirection: 'column',
+            gap: spacing.xs,
+            fontSize: '0.9rem',
+            color: colors.textSubtle,
+          }}
+        >
+          <span>Plan · Starter (4 videos / month)</span>
+          <span>Usage · 3 published · 1 queued</span>
+          <Button style={{ alignSelf: 'flex-start', paddingInline: spacing.md }}>Upgrade plan</Button>
         </div>
-      </aside>
+        <Button
+          onClick={() => signOut({ callbackUrl: '/' })}
+          style={{
+            justifyContent: 'center',
+            width: '100%',
+            background: colors.surfaceMuted,
+            color: colors.primary,
+          }}
+        >
+          Sign out
+        </Button>
+      </div>
+    </aside>
 
       <div
         style={{

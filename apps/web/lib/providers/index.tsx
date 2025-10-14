@@ -1,5 +1,6 @@
 'use client';
 
+import { SessionProvider } from 'next-auth/react';
 import { ReactNode, useState } from 'react';
 import { QueryClient, QueryClientProvider } from 'react-query';
 
@@ -13,8 +14,10 @@ export function Providers({ children }: ProvidersProps) {
   const [queryClient] = useState(() => new QueryClient());
 
   return (
-    <QueryClientProvider client={queryClient}>
-      <BusinessProvider>{children}</BusinessProvider>
-    </QueryClientProvider>
+    <SessionProvider>
+      <QueryClientProvider client={queryClient}>
+        <BusinessProvider>{children}</BusinessProvider>
+      </QueryClientProvider>
+    </SessionProvider>
   );
 }
