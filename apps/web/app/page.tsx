@@ -1,755 +1,343 @@
-"use client";
+import type { LucideIcon } from 'lucide-react';
+import {
+  ArrowRight,
+  CalendarCheck2,
+  Clock3,
+  Clapperboard,
+  LineChart,
+  MessageCircle,
+  ShieldCheck,
+  Sparkles,
+  Store,
+  Workflow,
+  Palette,
+  Share2,
+} from 'lucide-react';
 
-import { Button, breakpoints, colors, radii, spacing, typography } from '@videobooker/ui';
-import { useEffect, useMemo, useState, type CSSProperties } from 'react';
+import { Avatar, AvatarFallback } from '../components/ui/avatar';
+import { Badge } from '../components/ui/badge';
+import { Button } from '../components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '../components/ui/card';
 
-import { useBusiness } from '../lib/hooks/useBusiness';
-import { useViewport } from '../lib/hooks/useViewport';
-
-type NavigationItem = {
-  label: string;
+const launchSteps: Array<{
+  icon: LucideIcon;
+  title: string;
+  timeline: string;
   description: string;
-  status?: 'default' | 'active' | 'locked';
-  badge?: string;
-};
-
-const navigationItems: NavigationItem[] = [
-  { label: 'Home', description: 'Launchpad overview', status: 'active' },
-  { label: 'Create', description: 'Templates & drafts' },
-  { label: 'Schedule', description: 'Calendar & queue' },
-  { label: 'Inbox', description: 'DM handoffs' },
-  { label: 'Bookings', description: 'Appointments & availability' },
-  { label: 'Analytics', description: 'Performance trends' },
-  { label: 'Library', description: 'Brand kit & media' },
-  { label: 'Settings', description: 'Business & billing' },
-];
-
-const checklistItems = [
-  { label: 'Connect Instagram & Facebook', complete: true },
-  { label: 'Sync Calendly availability', complete: true },
-  { label: 'Generate first video concepts', complete: true },
-  { label: 'Publish a promo to Meta', complete: false },
-  { label: 'Send yourself a DM test booking', complete: false },
-  { label: 'Secure first booking', complete: false },
-];
-
-const quickActions = [
-  { label: 'Generate new promo', helper: '3 fresh concepts in under 3 min' },
-  { label: 'Schedule this week’s posts', helper: 'Drag onto optimal times' },
-  { label: 'Review DM assistant', helper: 'Suggested replies ready' },
-];
-
-const upcomingSchedule = [
+}> = [
   {
-    time: 'Today · 5:30 PM',
-    platform: 'Instagram Reels',
-    title: 'Fresh Fade Friday Promo',
-    status: 'Scheduled',
+    icon: Store,
+    title: 'Business profile',
+    timeline: '2 minutes',
+    description: 'Choose your vertical, top services, hours, and locations with proven defaults ready to go.',
   },
   {
-    time: 'Thu · 10:00 AM',
-    platform: 'Facebook Feed',
-    title: 'Back-to-School Touch-Up',
-    status: 'Needs caption',
+    icon: Share2,
+    title: 'Connect social accounts',
+    timeline: '2 minutes',
+    description: 'OAuth for Instagram and Facebook with a benefit checklist and sandbox test publish button.',
   },
   {
-    time: 'Sat · 9:15 AM',
-    platform: 'Stories',
-    title: 'Weekend Walk-in Slots',
-    status: 'Draft',
+    icon: CalendarCheck2,
+    title: 'Booking integration',
+    timeline: '3 minutes',
+    description: 'Link Calendly or Acuity, map services to durations, and preview availability inside the flow.',
+  },
+  {
+    icon: Palette,
+    title: 'Brand kit essentials',
+    timeline: '2 minutes',
+    description: 'Upload your logo, lock colors, and pick a font pairing with instant accessibility contrast checks.',
+  },
+  {
+    icon: Sparkles,
+    title: 'Kick-off offer',
+    timeline: '1 minute',
+    description: 'Select a high-performing offer template for your category with CTA defaults and messaging tips.',
+  },
+  {
+    icon: Clapperboard,
+    title: 'Generate first concepts',
+    timeline: '≤ 3 minutes',
+    description: 'Spin up three promo-ready concepts with render progress that falls back automatically if needed.',
   },
 ];
 
-const inboxPreview = [
+const flowHighlights: Array<{
+  icon: LucideIcon;
+  title: string;
+  description: string;
+  metric: string;
+}> = [
   {
-    from: '@stylehunter21',
-    message: '“Do you have any Saturday morning spots?”',
-    intent: 'Availability',
-    status: 'Assistant replied · Booking link sent',
+    icon: Workflow,
+    title: 'One connected flow',
+    description:
+      'Creation, scheduling, DM hand-offs, and bookings stay in the same workspace with handoffs that feel effortless.',
+    metric: 'Create → Post → DM → Book',
   },
   {
-    from: 'Taylor M.',
-    message: '“Loved last video—can I book color + cut?”',
-    intent: 'Service details',
-    status: 'Waiting on you · Suggested reply ready',
+    icon: MessageCircle,
+    title: 'DM assistant ready out-of-the-box',
+    description:
+      'Intent-aware replies send availability, capture leads, and loop you in for handoffs with contextual nudges.',
+    metric: '6 intents tracked from day one',
+  },
+  {
+    icon: LineChart,
+    title: 'Booking-focused analytics',
+    description:
+      'Start every session with a bookings-first dashboard that tells you what to publish next and why it matters.',
+    metric: 'Video → appointment conversion surfaced',
+  },
+  {
+    icon: ShieldCheck,
+    title: 'Guardrails without friction',
+    description:
+      'Rate limits, permissions, and fail-safes keep experiments safe while you scale production and publishing.',
+    metric: 'Feature flags + audit log baked in',
   },
 ];
 
-const performanceHighlights = [
+const testimonials = [
   {
-    stat: '3.2%',
-    label: 'Video → booking conversion',
-    trend: '+0.8% vs last week',
+    name: 'Jordan Ellis',
+    role: 'Owner, Harbor & Hue Salon',
+    quote:
+      'We launched our first polished promo and filled two new appointment blocks before lunch. The 30-minute checklist is exactly what studio owners need.',
+    initials: 'JE',
   },
-  {
-    stat: '4 / 4',
-    label: 'Videos scheduled this month',
-    trend: 'Starter plan fulfilled',
-  },
-  {
-    stat: '6',
-    label: 'DM bookings captured',
-    trend: '+2 handoffs vs avg',
-  },
+];
+
+const heroStats = [
+  { label: 'Time to first publish', value: '≤ 30 min', supporting: 'Guided checklist from blank slate to live promo.' },
+  { label: 'Drafts generated', value: '3 concepts', supporting: 'Ready to refine, schedule, or auto-publish.' },
+  { label: 'Bookings captured', value: '+22%', supporting: 'DM assistant + smart offers keep the calendar full.' },
 ];
 
 export default function HomePage() {
-  const { width } = useViewport();
-  const { activeBusinessId, setActiveBusinessId } = useBusiness();
-  const [isNavOpen, setIsNavOpen] = useState(false);
-
-  const isMobile = width < breakpoints.tablet;
-  const isTablet = width >= breakpoints.tablet && width < breakpoints.desktop;
-  const navWidth = isTablet ? '240px' : '280px';
-  const contentPadding = isMobile ? spacing.lg : isTablet ? spacing.xl : spacing['2xl'];
-  const sectionGap = isMobile ? spacing.xl : spacing['2xl'];
-
-  useEffect(() => {
-    if (!isMobile) {
-      setIsNavOpen(false);
-    }
-  }, [isMobile]);
-
-  const capsuleStyle = useMemo<CSSProperties>(
-    () => ({
-      fontSize: isMobile ? '0.7rem' : '0.75rem',
-      padding: `${spacing.xs} ${spacing.sm}`,
-      borderRadius: radii.pill,
-      background: colors.primarySoft,
-      color: colors.primary,
-      fontWeight: 600,
-      letterSpacing: '0.04em',
-    }),
-    [isMobile],
-  );
-
-  const renderNavigation = (variant: 'desktop' | 'mobile') =>
-    navigationItems.map((item) => {
-      const isActive = item.status === 'active';
-
-      const buttonStyle: CSSProperties = {
-        textAlign: 'left',
-        padding: spacing.md,
-        borderRadius: radii.md,
-        border: `1px solid ${isActive ? colors.primary : colors.border}`,
-        background: isActive ? colors.primarySoft : colors.surface,
-        color: colors.text,
-        cursor: 'pointer',
-        display: 'flex',
-        flexDirection: 'column',
-        gap: spacing.xs,
-        fontFamily: typography.fontFamily,
-        width: variant === 'mobile' ? '100%' : 'auto',
-        boxShadow: variant === 'mobile' ? '0 10px 20px rgba(16, 18, 35, 0.08)' : 'none',
-        transition: 'background 160ms ease, transform 160ms ease',
-      };
-
-      const descriptionStyle: CSSProperties = {
-        color: colors.textSubtle,
-        fontSize: '0.875rem',
-      };
-
-      return (
-        <button
-          key={item.label}
-          type="button"
-          style={buttonStyle}
-          onClick={() => {
-            if (isMobile) {
-              setIsNavOpen(false);
-            }
-          }}
-        >
-          <span style={{ fontWeight: 600 }}>{item.label}</span>
-          <span style={descriptionStyle}>{item.description}</span>
-        </button>
-      );
-    });
-
-  const completedItems = checklistItems.filter((item) => item.complete).length;
-  const completionPercent = Math.round((completedItems / checklistItems.length) * 100);
-
   return (
-    <main
-      style={{
-        minHeight: '100vh',
-        display: 'grid',
-        gridTemplateColumns: isMobile ? '1fr' : `${navWidth} 1fr`,
-        background: colors.canvas,
-        color: colors.text,
-      }}
-    >
-      {!isMobile && (
-        <aside
-          style={{
-            background: colors.surface,
-            borderRight: `1px solid ${colors.border}`,
-            padding: spacing.lg,
-            display: 'flex',
-            flexDirection: 'column',
-            gap: spacing.xl,
-            position: 'sticky',
-            top: 0,
-            height: '100vh',
-            overflowY: 'auto',
-          }}
-        >
-          <div
-            style={{
-              background: 'linear-gradient(135deg, #1E7A78 0%, #2C9290 100%)',
-              borderRadius: radii.lg,
-              padding: spacing.lg,
-              color: colors.surface,
-              boxShadow: '0 12px 32px rgba(30, 122, 120, 0.25)',
-            }}
-          >
-            <div style={{ fontFamily: typography.displayFamily, fontSize: '1.25rem', fontWeight: 600 }}>VideoBooker</div>
-            <p style={{ marginTop: spacing.sm, lineHeight: 1.5 }}>
-              Guided launch mode keeps you on track. Publish your first promo and land a booking in under 30 minutes.
-            </p>
-            <div style={{ marginTop: spacing.md }}>
-              <Button onClick={() => setActiveBusinessId(activeBusinessId ? null : 'demo-business')}>
-                {activeBusinessId ? 'Switch business' : 'Load demo data'}
-              </Button>
-            </div>
-          </div>
-
-          <nav style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>{renderNavigation('desktop')}</nav>
-        </aside>
-      )}
-
-      <div
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          padding: contentPadding,
-          gap: sectionGap,
-        }}
-      >
-        {isMobile && (
-          <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
-            <div
-              style={{
-                background: colors.surface,
-                borderRadius: radii.lg,
-                border: `1px solid ${colors.border}`,
-                padding: spacing.md,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'space-between',
-                gap: spacing.md,
-                boxShadow: '0 12px 24px rgba(16, 18, 35, 0.05)',
-              }}
-            >
-              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xxs }}>
-                <span style={{ fontWeight: 600 }}>Navigation</span>
-                <span style={{ color: colors.textSubtle, fontSize: '0.875rem' }}>
-                  Jump to key areas of your workspace.
-                </span>
+    <main className="relative overflow-hidden">
+      <section className="relative bg-gradient-to-br from-primary/10 via-background to-background">
+        <div className="absolute inset-0 bg-hero-grid [background-size:22px_22px] opacity-60" aria-hidden="true" />
+        <div className="container relative flex flex-col gap-12 py-24 lg:py-32">
+          <div className="max-w-3xl space-y-6">
+            <Badge className="w-fit" variant="accent">
+              <div className="flex items-center gap-2 text-xs font-semibold tracking-wide text-accent-foreground">
+                <Sparkles className="h-4 w-4" /> Guided 30-Minute Launch
               </div>
-              <Button
-                onClick={() => setIsNavOpen((prev) => !prev)}
-                style={{ padding: `${spacing.xs} ${spacing.md}`, fontSize: '0.75rem', boxShadow: 'none' }}
-              >
-                {isNavOpen ? 'Hide menu' : 'Show menu'}
-              </Button>
-            </div>
-            {isNavOpen && (
-              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>{renderNavigation('mobile')}</div>
-            )}
-          </div>
-        )}
-
-        <header
-          style={{
-            display: 'flex',
-            flexDirection: isMobile ? 'column' : 'row',
-            justifyContent: isMobile ? 'flex-start' : 'space-between',
-            alignItems: isMobile ? 'stretch' : 'center',
-            gap: spacing.lg,
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}>
-            <span style={{ ...capsuleStyle, width: 'fit-content' }}>30-Minute Launch</span>
-            <h1
-              style={{
-                fontFamily: typography.displayFamily,
-                fontSize: '2rem',
-                margin: 0,
-                letterSpacing: '-0.01em',
-                textAlign: isMobile ? 'left' : 'inherit',
-              }}
-            >
-              Welcome back{activeBusinessId ? `, ${activeBusinessId.replace('-', ' ')}` : ''}
+            </Badge>
+            <h1 className="text-balance text-4xl font-bold leading-tight tracking-tight text-foreground md:text-5xl lg:text-6xl">
+              Launch video marketing and bookings in one guided flow.
             </h1>
-            <span style={{ color: colors.textSubtle }}>Let’s get your next promo published and booked.</span>
-          </div>
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              alignItems: isMobile ? 'stretch' : 'center',
-              gap: spacing.md,
-            }}
-          >
-            <div
-              style={{
-                padding: `${spacing.xs} ${spacing.md}`,
-                borderRadius: radii.pill,
-                border: `1px solid ${colors.border}`,
-                background: colors.surface,
-                display: 'flex',
-                flexDirection: 'column',
-                alignItems: 'flex-start',
-                gap: spacing.xxs,
-                minWidth: '180px',
-                width: isMobile ? '100%' : 'auto',
-              }}
-            >
-              <span style={{ fontSize: '0.75rem', color: colors.textSubtle }}>Plan usage</span>
-              <span style={{ fontWeight: 600 }}>Starter · 4 / 4 videos scheduled</span>
-            </div>
-            <Button style={{ width: isMobile ? '100%' : 'auto' }}>Create new video</Button>
-          </div>
-        </header>
-
-        <section
-          style={{
-            background: 'linear-gradient(120deg, rgba(30, 122, 120, 0.95) 0%, rgba(43, 146, 144, 0.85) 100%)',
-            borderRadius: radii.lg,
-            padding: isMobile ? spacing.xl : spacing['2xl'],
-            color: colors.surface,
-            boxShadow: '0 18px 40px rgba(30, 122, 120, 0.3)',
-            display: 'grid',
-            gridTemplateColumns: isTablet ? '1fr' : '1.4fr 1fr',
-            gap: isMobile ? spacing.xl : spacing['2xl'],
-          }}
-        >
-          <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.md }}>
-            <div style={{ ...capsuleStyle, background: 'rgba(255, 255, 255, 0.16)', color: colors.surface, width: 'fit-content' }}>
-              Guided track
-            </div>
-            <h2
-              style={{
-                fontFamily: typography.displayFamily,
-                fontSize: isMobile ? '1.75rem' : '2.25rem',
-                margin: 0,
-                lineHeight: 1.2,
-              }}
-            >
-              Publish now and your DM assistant will hand off bookings with your latest availability.
-            </h2>
-            <p style={{ margin: 0, lineHeight: 1.6 }}>
-              Nice—your IG Reel is queued for this evening. Finish the checklist to unlock auto-posting suggestions and DM handoffs.
+            <p className="text-lg text-muted-foreground md:text-xl">
+              VideoBooker walks local service businesses from blank slate to a published promo and first booking in under
+              thirty minutes. Opinionated templates, connected automations, and an assistant that never forgets the follow-up.
             </p>
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: isMobile ? 'column' : 'row',
-                gap: spacing.md,
-              }}
-            >
-              <Button style={{ width: isMobile ? '100%' : 'auto' }}>Open checklist</Button>
-              <Button
-                style={{
-                  background: 'rgba(255, 255, 255, 0.12)',
-                  color: colors.surface,
-                  boxShadow: 'none',
-                  width: isMobile ? '100%' : 'auto',
-                }}
-              >
-                Preview reel
+            <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+              <Button size="lg" className="gap-2">
+                Start the launch checklist
+                <ArrowRight className="h-4 w-4" />
+              </Button>
+              <Button variant="outline" size="lg" className="gap-2">
+                See product tour
+                <Clock3 className="h-4 w-4" />
               </Button>
             </div>
           </div>
-          <div
-            style={{
-              background: 'rgba(255, 255, 255, 0.12)',
-              borderRadius: radii.lg,
-              padding: spacing.xl,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: spacing.md,
-              minHeight: isTablet ? 'auto' : '100%',
-            }}
-          >
-            <div style={{ fontSize: '0.875rem', letterSpacing: '0.08em', textTransform: 'uppercase', opacity: 0.9 }}>
-              Launch progress
-            </div>
-            <div style={{ fontFamily: typography.displayFamily, fontSize: '2.5rem', fontWeight: 600 }}>{completionPercent}%</div>
-            <div style={{ color: 'rgba(255, 255, 255, 0.85)' }}>
-              {completedItems} of {checklistItems.length} milestones complete
-            </div>
-            <div
-              style={{
-                position: 'relative',
-                height: '12px',
-                borderRadius: radii.pill,
-                background: 'rgba(255, 255, 255, 0.22)',
-                overflow: 'hidden',
-              }}
-            >
-              <div
-                style={{
-                  position: 'absolute',
-                  top: 0,
-                  left: 0,
-                  bottom: 0,
-                  width: `${completionPercent}%`,
-                  background: colors.secondary,
-                  borderRadius: radii.pill,
-                }}
-              />
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}>
-              {checklistItems.slice(0, 3).map((item) => (
-                <div
-                  key={item.label}
-                  style={{
-                    display: 'flex',
-                    alignItems: 'center',
-                    gap: spacing.sm,
-                    fontSize: '0.875rem',
-                    color: 'rgba(255, 255, 255, 0.85)',
-                  }}
-                >
-                  <span
-                    aria-hidden
-                    style={{
-                      width: '18px',
-                      height: '18px',
-                      borderRadius: '50%',
-                      background: item.complete ? colors.secondary : 'transparent',
-                      border: `2px solid ${colors.surface}`,
-                      display: 'inline-flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '0.6rem',
-                      fontWeight: 700,
-                      color: colors.surface,
-                    }}
-                  >
-                    {item.complete ? '✓' : ''}
-                  </span>
-                  {item.label}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-
-        <section
-          style={{
-            display: 'grid',
-            gridTemplateColumns: isTablet ? '1fr' : '1.4fr 1fr',
-            gap: isMobile ? spacing.xl : spacing['2xl'],
-          }}
-        >
-          <div
-            style={{
-              background: colors.surface,
-              borderRadius: radii.lg,
-              padding: spacing.xl,
-              boxShadow: '0 20px 50px rgba(16, 18, 35, 0.08)',
-              border: `1px solid ${colors.border}`,
-              display: 'flex',
-              flexDirection: 'column',
-              gap: spacing.lg,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: isMobile ? 'column' : 'row',
-                justifyContent: 'space-between',
-                alignItems: isMobile ? 'flex-start' : 'center',
-                gap: spacing.md,
-              }}
-            >
-              <div>
-                <h3 style={{ margin: 0, fontFamily: typography.subheadingFamily, fontSize: '1.5rem' }}>
-                  30-minute launch checklist
-                </h3>
-                <p style={{ margin: 0, color: colors.textSubtle }}>
-                  Stay on the guided path—finish these steps to unlock automated nudges.
-                </p>
-              </div>
-              <span style={{ ...capsuleStyle, width: 'fit-content' }}>
-                {completedItems} / {checklistItems.length} done
-              </span>
-            </div>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>
-              {checklistItems.map((item) => (
-                <div
-                  key={item.label}
-                  style={{
-                    display: 'flex',
-                    flexDirection: isMobile ? 'column' : 'row',
-                    alignItems: isMobile ? 'flex-start' : 'center',
-                    justifyContent: 'space-between',
-                    gap: spacing.md,
-                    padding: `${spacing.sm} ${spacing.md}`,
-                    borderRadius: radii.md,
-                    background: item.complete ? colors.primarySoft : colors.surfaceMuted,
-                    border: `1px solid ${item.complete ? colors.primary : colors.border}`,
-                  }}
-                >
-                  <div style={{ display: 'flex', alignItems: 'center', gap: spacing.md }}>
-                    <span
-                      aria-hidden
-                      style={{
-                        width: '24px',
-                        height: '24px',
-                        borderRadius: '50%',
-                        border: `2px solid ${item.complete ? colors.primary : colors.border}`,
-                        background: item.complete ? colors.primary : colors.surface,
-                        color: item.complete ? colors.surface : colors.textSubtle,
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        justifyContent: 'center',
-                        fontWeight: 700,
-                      }}
-                    >
-                      {item.complete ? '✓' : ''}
-                    </span>
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xxs }}>
-                      <span style={{ fontWeight: 600 }}>{item.label}</span>
-                      <span style={{ color: colors.textSubtle, fontSize: '0.875rem' }}>
-                        {item.complete ? 'Completed' : 'Next up'}
-                      </span>
-                    </div>
-                  </div>
-                  {!item.complete && (
-                    <Button style={{ background: colors.secondary, color: colors.text, width: isMobile ? '100%' : 'auto' }}>
-                      Open step
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div style={{ display: 'flex', flexDirection: 'column', gap: isMobile ? spacing.xl : spacing['2xl'] }}>
-            <div
-              style={{
-                background: colors.surface,
-                borderRadius: radii.lg,
-                padding: spacing.xl,
-                border: `1px solid ${colors.border}`,
-                boxShadow: '0 14px 30px rgba(16, 18, 35, 0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: spacing.md,
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ margin: 0, fontFamily: typography.subheadingFamily, fontSize: '1.25rem' }}>Upcoming schedule</h3>
-                <span style={{ fontSize: '0.75rem', color: colors.textSubtle }}>Auto-post suggestions ready</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>
-                {upcomingSchedule.map((entry) => (
-                  <div
-                    key={`${entry.time}-${entry.title}`}
-                    style={{
-                      borderRadius: radii.md,
-                      padding: spacing.md,
-                      border: `1px solid ${colors.border}`,
-                      background: colors.surfaceMuted,
-                      display: 'flex',
-                      flexDirection: isMobile ? 'column' : 'row',
-                      justifyContent: 'space-between',
-                      alignItems: isMobile ? 'flex-start' : 'center',
-                      gap: spacing.md,
-                    }}
-                  >
-                    <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.xs }}>
-                      <span style={{ ...capsuleStyle, width: 'fit-content' }}>{entry.platform}</span>
-                      <span style={{ fontWeight: 600 }}>{entry.title}</span>
-                      <span style={{ color: colors.textSubtle }}>{entry.time}</span>
-                    </div>
-                    <span style={{ color: colors.secondary, fontWeight: 600 }}>{entry.status}</span>
-                  </div>
-                ))}
-              </div>
-              <Button style={{ alignSelf: isMobile ? 'stretch' : 'flex-start' }}>Open calendar</Button>
-            </div>
-
-            <div
-              style={{
-                background: colors.surface,
-                borderRadius: radii.lg,
-                padding: spacing.xl,
-                border: `1px solid ${colors.border}`,
-                boxShadow: '0 14px 30px rgba(16, 18, 35, 0.05)',
-                display: 'flex',
-                flexDirection: 'column',
-                gap: spacing.md,
-              }}
-            >
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                <h3 style={{ margin: 0, fontFamily: typography.subheadingFamily, fontSize: '1.25rem' }}>Inbox spotlight</h3>
-                <span style={{ fontSize: '0.75rem', color: colors.textSubtle }}>DM assistant active</span>
-              </div>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: spacing.sm }}>
-                {inboxPreview.map((thread) => (
-                  <div
-                    key={thread.from}
-                    style={{
-                      borderRadius: radii.md,
-                      padding: spacing.md,
-                      border: `1px solid ${colors.border}`,
-                      display: 'flex',
-                      flexDirection: 'column',
-                      gap: spacing.xs,
-                      background: colors.surfaceMuted,
-                    }}
-                  >
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-                      <span style={{ fontWeight: 600 }}>{thread.from}</span>
-                      <span
-                        style={{
-                          ...capsuleStyle,
-                          background: colors.secondary,
-                          color: colors.surface,
-                          width: 'fit-content',
-                        }}
-                      >
-                        {thread.intent}
-                      </span>
-                    </div>
-                    <span style={{ color: colors.text }}>{thread.message}</span>
-                    <span style={{ color: colors.textSubtle, fontSize: '0.875rem' }}>{thread.status}</span>
-                  </div>
-                ))}
-              </div>
-              <Button style={{ alignSelf: isMobile ? 'stretch' : 'flex-start' }}>Go to inbox</Button>
-            </div>
-          </div>
-        </section>
-
-        <section
-          style={{
-            background: colors.surface,
-            borderRadius: radii.lg,
-            padding: spacing.xl,
-            border: `1px solid ${colors.border}`,
-            boxShadow: '0 14px 30px rgba(16, 18, 35, 0.05)',
-            display: 'flex',
-            flexDirection: 'column',
-            gap: spacing.lg,
-          }}
-        >
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: isMobile ? 'column' : 'row',
-              justifyContent: 'space-between',
-              alignItems: isMobile ? 'flex-start' : 'center',
-              gap: spacing.md,
-            }}
-          >
-            <div>
-              <h3 style={{ margin: 0, fontFamily: typography.subheadingFamily, fontSize: '1.5rem' }}>
-                Performance at a glance
-              </h3>
-              <p style={{ margin: 0, color: colors.textSubtle }}>
-                Track how video activity drives appointments and keep momentum.
-              </p>
-            </div>
-            <Button style={{ background: colors.secondary, color: colors.text, width: isMobile ? '100%' : 'auto' }}>
-              View analytics
-            </Button>
-          </div>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: isMobile ? '1fr' : isTablet ? 'repeat(2, minmax(0, 1fr))' : 'repeat(3, minmax(0, 1fr))',
-              gap: spacing.lg,
-            }}
-          >
-            {performanceHighlights.map((highlight) => (
-              <div
-                key={highlight.label}
-                style={{
-                  padding: spacing.lg,
-                  borderRadius: radii.lg,
-                  background: colors.surfaceMuted,
-                  border: `1px solid ${colors.border}`,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: spacing.xs,
-                }}
-              >
-                <span style={{ fontSize: '0.875rem', color: colors.textSubtle }}>{highlight.label}</span>
-                <span
-                  style={{
-                    fontFamily: typography.displayFamily,
-                    fontSize: '2rem',
-                    fontWeight: 600,
-                    color: colors.primary,
-                    fontFeatureSettings: '"tnum" 1',
-                  }}
-                >
-                  {highlight.stat}
-                </span>
-                <span style={{ color: colors.secondary, fontWeight: 600 }}>{highlight.trend}</span>
-              </div>
+          <div className="grid gap-4 md:grid-cols-3">
+            {heroStats.map((stat) => (
+              <Card key={stat.label} className="border-none bg-card/80 backdrop-blur">
+                <CardContent className="space-y-2 p-6">
+                  <p className="text-sm font-medium text-muted-foreground uppercase tracking-wide">{stat.label}</p>
+                  <p className="text-3xl font-semibold text-foreground">{stat.value}</p>
+                  <p className="text-sm text-muted-foreground">{stat.supporting}</p>
+                </CardContent>
+              </Card>
             ))}
           </div>
+        </div>
+      </section>
 
-          <div
-            style={{
-              display: 'flex',
-              flexDirection: isTablet ? 'column' : 'row',
-              justifyContent: isTablet ? 'flex-start' : 'space-between',
-              alignItems: isTablet ? 'stretch' : 'center',
-              gap: spacing.lg,
-            }}
-          >
-            <div
-              style={{
-                display: 'flex',
-                flexDirection: isMobile ? 'column' : 'row',
-                gap: spacing.lg,
-                flexWrap: isTablet ? 'wrap' : 'nowrap',
-              }}
-            >
-              {quickActions.map((action) => (
-                <div
-                  key={action.label}
-                  style={{
-                    padding: spacing.lg,
-                    borderRadius: radii.lg,
-                    background: colors.surface,
-                    border: `1px solid ${colors.border}`,
-                    boxShadow: '0 12px 24px rgba(16, 18, 35, 0.05)',
-                    display: 'flex',
-                    flexDirection: 'column',
-                    gap: spacing.xs,
-                    minWidth: isMobile ? 'auto' : '220px',
-                    width: isMobile ? '100%' : 'auto',
-                  }}
-                >
-                  <span style={{ fontWeight: 600 }}>{action.label}</span>
-                  <span style={{ color: colors.textSubtle }}>{action.helper}</span>
-                  <Button
-                    style={{
-                      alignSelf: isMobile ? 'stretch' : 'flex-start',
-                      marginTop: spacing.sm,
-                      width: isMobile ? '100%' : 'auto',
-                    }}
-                  >
-                    Launch
-                  </Button>
+      <section className="container py-24">
+        <div className="mx-auto max-w-2xl text-center">
+          <Badge variant="secondary" className="mx-auto mb-4 w-fit">
+            Built for speed to value
+          </Badge>
+          <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+            The 30-minute launch checklist keeps owners moving forward
+          </h2>
+          <p className="mt-4 text-lg text-muted-foreground">
+            Each step is pre-filled with smart defaults and clear guardrails so teams get to their first published promo and
+            first booking without slowing down for setup hurdles.
+          </p>
+        </div>
+        <div className="mt-12 grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {launchSteps.map((step) => (
+            <Card key={step.title} className="h-full border-border/70 bg-card/90">
+              <CardHeader className="flex flex-row items-start gap-4">
+                <div className="flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10 text-primary">
+                  <step.icon className="h-6 w-6" aria-hidden="true" />
                 </div>
+                <div className="space-y-1">
+                  <CardTitle>{step.title}</CardTitle>
+                  <CardDescription className="text-xs font-semibold uppercase text-primary">{step.timeline}</CardDescription>
+                </div>
+              </CardHeader>
+              <CardContent>
+                <p className="text-sm text-muted-foreground leading-relaxed">{step.description}</p>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </section>
+
+      <section className="relative bg-primary/5 py-24">
+        <div className="container grid gap-10 lg:grid-cols-[1.1fr_.9fr] lg:items-center">
+          <div className="space-y-6">
+            <Badge variant="accent" className="w-fit">
+              Connected workflow
+            </Badge>
+            <h2 className="text-balance text-3xl font-semibold tracking-tight text-foreground md:text-4xl">
+              From template to booked appointment without losing context
+            </h2>
+            <p className="text-lg text-muted-foreground">
+              Creation, scheduling, DM assistance, and analytics share the same source of truth. Every render, post, and
+              booking is annotated so you always know what moved the needle.
+            </p>
+            <div className="grid gap-4 sm:grid-cols-2">
+              {flowHighlights.map((item) => (
+                <Card key={item.title} className="border-none bg-card/90 shadow-soft-md">
+                  <CardHeader className="space-y-2">
+                    <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-secondary/10 text-secondary-foreground">
+                      <item.icon className="h-5 w-5" aria-hidden="true" />
+                    </div>
+                    <CardTitle className="text-lg">{item.title}</CardTitle>
+                  </CardHeader>
+                  <CardContent className="space-y-3 text-sm text-muted-foreground">
+                    <p>{item.description}</p>
+                    <p className="font-semibold text-secondary">{item.metric}</p>
+                  </CardContent>
+                </Card>
               ))}
             </div>
-            <Button style={{ alignSelf: isTablet ? 'flex-start' : 'center', width: isMobile ? '100%' : 'auto' }}>
-              Weekly playbook
+          </div>
+          <Card className="border-none bg-card shadow-soft-lg">
+            <CardHeader>
+              <CardTitle className="text-2xl">What owners experience</CardTitle>
+              <CardDescription>Every cohort starts with a guided launch and ends with actionable results.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-6">
+              <div className="space-y-2 rounded-2xl bg-muted/60 p-6">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-semibold text-primary">82%</span>
+                  <span className="text-sm text-muted-foreground">reach the success screen on day one</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  The checklist keeps momentum by sequencing tasks the way owners actually work. No guessing, no detours.
+                </p>
+              </div>
+              <div className="space-y-2 rounded-2xl bg-secondary/10 p-6">
+                <div className="flex items-baseline gap-2">
+                  <span className="text-4xl font-semibold text-secondary-foreground">3.2%</span>
+                  <span className="text-sm text-muted-foreground">average video → booking conversion</span>
+                </div>
+                <p className="text-sm text-muted-foreground">
+                  Offers, CTA end-cards, and DM assistant prompts stay synced so every promo drives toward the calendar.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      <section className="container py-24">
+        <div className="grid gap-10 lg:grid-cols-[2fr_1fr] lg:items-start">
+          <div className="space-y-8">
+            <div className="space-y-4">
+              <Badge variant="secondary" className="w-fit">
+                Neighborhood ally promise
+              </Badge>
+              <h2 className="text-balance text-3xl font-semibold tracking-tight md:text-4xl">
+                Quiet power that keeps owners in control
+              </h2>
+              <p className="text-lg text-muted-foreground">
+                Built for service providers who want polished marketing without hiring an agency. VideoBooker gives you the
+                playbook, automation, and safety net while you keep the relationship with every customer.
+              </p>
+            </div>
+            <div className="grid gap-6 md:grid-cols-2">
+              <Card className="border-border bg-card/80">
+                <CardHeader>
+                  <CardTitle className="text-lg">Guardrails over guesswork</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm text-muted-foreground">
+                  <p>Template-first creation with safe areas, auto ratios, and disclosures ready for compliance.</p>
+                  <p>Undo, retries, and reconnect CTAs keep launches resilient—even when APIs misbehave.</p>
+                </CardContent>
+              </Card>
+              <Card className="border-border bg-card/80">
+                <CardHeader>
+                  <CardTitle className="text-lg">Made for the whole team</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-2 text-sm text-muted-foreground">
+                  <p>Owner, Staff, and Billing roles ensure the right teammates see the right surfaces.</p>
+                  <p>Plan-aware nudges highlight when it’s time to upgrade without getting in the way.</p>
+                </CardContent>
+              </Card>
+            </div>
+          </div>
+          <div className="space-y-6">
+            {testimonials.map((testimonial) => (
+              <Card key={testimonial.name} className="border-none bg-card shadow-soft-md">
+                <CardContent className="space-y-5 p-8">
+                  <div className="flex items-center gap-4">
+                    <Avatar>
+                      <AvatarFallback>{testimonial.initials}</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <p className="font-semibold text-foreground">{testimonial.name}</p>
+                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
+                    </div>
+                  </div>
+                  <p className="text-lg leading-relaxed text-muted-foreground">“{testimonial.quote}”</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="relative border-y border-border/70 bg-gradient-to-br from-primary/95 via-primary to-primary/90 text-primary-foreground">
+        <div className="container flex flex-col gap-8 py-20 text-center">
+          <div className="mx-auto max-w-3xl space-y-4">
+            <Badge variant="outline" className="border-primary-foreground/30 text-primary-foreground">
+              Ready when you are
+            </Badge>
+            <h2 className="text-balance text-4xl font-semibold leading-tight md:text-5xl">
+              Publish your first promo and capture your first booking before the day ends.
+            </h2>
+            <p className="text-lg text-primary-foreground/80">
+              Join the next cohort and let VideoBooker pair templates, scheduling, DM replies, and analytics so you can focus on
+              the craft—not the tools.
+            </p>
+          </div>
+          <div className="flex flex-col items-center justify-center gap-3 sm:flex-row">
+            <Button size="lg" className="bg-primary-foreground text-primary hover:bg-primary-foreground/90">
+              Reserve your onboarding slot
+            </Button>
+            <Button variant="ghost" size="lg" className="text-primary-foreground hover:bg-primary-foreground/10">
+              Talk to a product specialist
             </Button>
           </div>
-        </section>
-      </div>
+        </div>
+      </section>
     </main>
   );
 }

@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from 'next';
-import { Plus_Jakarta_Sans } from 'next/font/google';
 import { ReactNode } from 'react';
+
+import './globals.css';
 
 import { Providers } from '../lib/providers';
 
@@ -19,17 +20,10 @@ type RootLayoutProps = {
   children: ReactNode;
 };
 
-const plusJakartaSans = Plus_Jakarta_Sans({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'],
-  display: 'swap',
-  fallback: ['Inter', 'system-ui', 'sans-serif'],
-});
-
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <body className={plusJakartaSans.className}>
+      <body className="min-h-screen bg-background text-foreground antialiased">
         <Providers>{children}</Providers>
       </body>
     </html>
