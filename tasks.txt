@@ -23,7 +23,7 @@ Monorepo Skeleton (pre-Phase 0)
   - [ ] Business, User, TeamMembership, Plan/Usage, BrandKit, Integration (Meta, Calendly, Acuity, Buffer/Hootsuite, Stripe), ServiceCatalog, Offer, Template, MediaAsset, VideoProject, RenderJob, PublishJob, Booking, Conversation, Message, Intent, AnalyticsEvent, ConsentLog.
 - Design system and components
   - [x] Theme tokens, button, and layout primitives seeded in `packages/ui`.
-  - [ ] Chips, tabs, cards, badges, toasts, loaders, calendar, list, modal, side panel, form controls, pill tags, usage/quota pill.
+  - [x] Chips, tabs, cards, badges, toasts, loaders, calendar, list, modal, side panel, form controls, pill tags, usage/quota pill.
   - [ ] Theming, high-contrast theme variants, typography scale, platform/status iconography.
 - Observability/ops foundations
   - [ ] Structured logging, metrics, tracing.
@@ -35,7 +35,7 @@ Phase 1: Onboarding + 30-Minute Launch Checklist
   - Persistent checklist banner with progress states.
 - Step 1: Business profile
   - Form with category presets, services (top 3), hours, location.
-  - API: GET/PUT /business, /services; validation; smart defaults resolver by category.
+  - [x] API: GET/PUT /business, /services; validation; smart defaults resolver by category.
 - Step 2: Connect social (Meta)
   - OAuth flow for FB/IG. States: Connected, Needs permission, Retry.
   - Test publish sandbox toggle.
@@ -54,7 +54,7 @@ Phase 1: Onboarding + 30-Minute Launch Checklist
   - API: /brand-kit CRUD. Media upload (signed URLs) + S3.
 - Step 5: Offers and CTAs
   - Offer template selector by vertical; prefilled copy; CTA defaults to booking link; optional deposit link.
-  - API: /offers CRUD; inject default for category.
+  - [x] API: /offers CRUD; inject default for category.
 - Step 6: Generate first set
   - “Generate 3 concepts” button; render progress skeletons; ETA bar.
   - API: /video-projects (create), /render-jobs (start), SSE for progress.

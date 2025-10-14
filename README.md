@@ -6,7 +6,7 @@ This repo houses the VideoBooker product stack: a Next.js marketing/front‑offi
 
 - Install dependencies: `npm install`
 - Copy the provided `.env.example` files to their `.env.local` counterparts (root, `apps/web`, `services/api`, `services/workers`) and populate required values.
-- Run the web client: `npm run dev:web`
+- Run the web client: `npm run dev`
 - Run the API: `npm run dev:api`
 - Lint all workspaces: `npm run lint`
 - Typecheck all workspaces: `npm run typecheck`
@@ -16,7 +16,7 @@ This repo houses the VideoBooker product stack: a Next.js marketing/front‑offi
 | Route | Description |
 | ----- | ----------- |
 | `/` | Shadcn/Tailwind marketing landing page summarising the 30-minute launch flow. |
-| `/dashboard` | Operational launchpad with the 30-minute checklist, schedule preview, inbox spotlight, and performance highlights. |
+| `/dashboard` | Operational launchpad with the 30-minute checklist, schedule preview, inbox spotlight, and performance highlights. Served via the shared app shell (left nav + top bar). |
 | `/create` | Placeholder for template gallery and light editor workflows; links back to the launch plan. |
 | `/schedule` | Upcoming calendar overview and quota/usage concepts (scheduling MVP staging area). |
 | `/inbox` | Messaging hub placeholder showing how DM assistant and quick replies will slot in. |
