@@ -18,7 +18,8 @@
       "@videobooker/db": ["packages/db/src/index.ts"],
       "@videobooker/db/*": ["packages/db/src/*"],
       "@videobooker/ui": ["packages/ui/src/index.ts"],
-      "@videobooker/ui/*": ["packages/ui/src/*"]
+      "@videobooker/ui/*": ["packages/ui/src/*"],
+      "@videobooker/web/*": ["apps/web/*"]
     }
   },
   "include": ["apps", "services", "packages", "tests"],
