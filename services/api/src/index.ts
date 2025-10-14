@@ -1,18 +1,9 @@
 import { loadEnv } from '@videobooker/shared';
 import { config as loadEnvFile } from 'dotenv';
-import express from 'express';
+
+import { createServer } from './app';
 
 loadEnvFile();
-
-export function createServer() {
-  const app = express();
-
-  app.get('/health', (_req, res) => {
-    res.json({ status: 'ok' });
-  });
-
-  return app;
-}
 
 if (require.main === module) {
   const env = loadEnv();
@@ -23,3 +14,5 @@ if (require.main === module) {
     console.log(`API server listening on port ${port}`);
   });
 }
+
+export { createServer } from './app';
