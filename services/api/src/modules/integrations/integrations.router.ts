@@ -30,7 +30,19 @@ integrationsRouter.post('/:provider/connect', validateBody(connectSchema), (req,
     next(new HttpError(400, 'Unsupported integration provider'));
     return;
   }
-  const integration = store.updateIntegration(parseResult.data.provider, 'connected');
+  const integration = store.updateIntegration(parseResult.data.provider, {
+    status: 'connected',
+    ...(parseResult.data.provider === 'meta'
+      ? {
+          pages: ['Demo Fitness IG', 'Demo Fitness FB'],
+          sandboxMode: true,
+        }
+      : parseResult.data.provider === 'calendly' || parseResult.data.provider === 'acuity'
+        ? {
+            eventTypes: ['Intro Class', 'Consultation'],
+          }
+        : {}),
+  });
   res.json({ integration, metadata: req.body.metadata ?? null });
 });
 
@@ -40,7 +52,7 @@ integrationsRouter.post('/:provider/disconnect', (req, res, next) => {
     next(new HttpError(400, 'Unsupported integration provider'));
     return;
   }
-  const integration = store.updateIntegration(parseResult.data.provider, 'disconnected');
+  const integration = store.updateIntegration(parseResult.data.provider, { status: 'disconnected' });
   res.json({ integration });
 });
 
@@ -48,4 +60,21 @@ integrationsRouter.get('/availability', validateQuery(availabilityQuery), (req, 
   const { provider, date } = req.query as z.infer<typeof availabilityQuery>;
   const slots = store.listAvailability(provider, date);
   res.json({ provider, date, slots });
+});
+
+const updateIntegrationSchema = z.object({
+  status: z.enum(['connected', 'needs_attention', 'disconnected']).optional(),
+  sandboxMode: z.boolean().optional(),
+  pages: z.array(z.string()).optional(),
+  eventTypes: z.array(z.string()).optional(),
+});
+
+integrationsRouter.patch('/:provider', validateBody(updateIntegrationSchema), (req, res, next) => {
+  const parseResult = providerParamSchema.safeParse(req.params);
+  if (!parseResult.success) {
+    next(new HttpError(400, 'Unsupported integration provider'));
+    return;
+  }
+  const integration = store.updateIntegration(parseResult.data.provider, req.body);
+  res.json({ integration });
 });

@@ -31,16 +31,16 @@ Monorepo Skeleton (pre-Phase 0)
 
 Phase 1: Onboarding + 30-Minute Launch Checklist
 - UI scaffolding
-  - Left rail nav, top bar (business switcher, plan/usage, help, notifications, profile).
-  - Persistent checklist banner with progress states.
+  - [x] Left rail nav, top bar (business switcher, plan/usage, help, notifications, profile).
+  - [x] Persistent checklist banner with progress states.
 - Step 1: Business profile
-  - Form with category presets, services (top 3), hours, location.
+  - [x] Form with category presets, services (top 3), hours, location.
   - [x] API: GET/PUT /business, /services; validation; smart defaults resolver by category.
 - Step 2: Connect social (Meta)
   - OAuth flow for FB/IG. States: Connected, Needs permission, Retry.
-  - Test publish sandbox toggle.
+  - [x] Test publish sandbox toggle.
   - API: /integrations/meta/connect, token exchange, long-lived tokens, refresh.
-  - UI card with benefits, state badges, errors with reconnect CTA.
+  - [x] UI card with benefits, state badges, errors with reconnect CTA.
 - Step 3: Booking integration
   - OAuth cards for Calendly/Acuity. Live availability preview sidebar.
   - Service mapping UI: Business service ↔ external event types/durations.
@@ -57,7 +57,7 @@ Phase 1: Onboarding + 30-Minute Launch Checklist
   - [x] API: /offers CRUD; inject default for category.
 - Step 6: Generate first set
   - “Generate 3 concepts” button; render progress skeletons; ETA bar.
-  - API: /video-projects (create), /render-jobs (start), SSE for progress.
+  - [x] API: /video-projects (create), /render-jobs (start), SSE for progress.
   - Fallback render provider handling.
 - Success screen
   - Carousel of 3 drafts; actions: “Pick 1 to refine” and “Schedule all 3 for this month”.
@@ -85,7 +85,7 @@ Phase 3: Video Generation and Light Editor
   - Compliance: AI voiceover disclosure toggle with preview placement.
 - CTA end-card micro-builder
   - Layout picker; QR optional; auto booking link; short link generator; UTM builder; live “Test link” booking modal preview.
-  - API: /links (short links, UTM presets), /qr (image).
+  - [x] API: /links (short links, UTM presets), /qr (image).
 - Preview and renders
   - Multi-format switcher; queued render per format; retry/cancel.
   - API: /render-jobs SSE, asset URLs, storage.

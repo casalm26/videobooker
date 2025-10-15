@@ -4,6 +4,7 @@ import { UsagePill } from '@videobooker/ui';
 import type { LucideIcon } from 'lucide-react';
 import {
   BarChart3,
+  Building2,
   Calendar,
   ClipboardCheck,
   Library,
@@ -32,6 +33,7 @@ type NavItem = {
 
 const navigation: NavItem[] = [
   { href: '/dashboard', label: 'Dashboard', description: 'Launch checklist overview', icon: ClipboardCheck },
+  { href: '/business', label: 'Business', description: 'Profile & services', icon: Building2 },
   { href: '/create', label: 'Create', description: 'Templates & drafts', icon: Sparkles },
   { href: '/schedule', label: 'Schedule', description: 'Calendar & queue', icon: Calendar },
   { href: '/inbox', label: 'Inbox', description: 'DM handoffs', icon: MessageSquare },

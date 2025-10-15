@@ -33,6 +33,7 @@ export type IntegrationStatus =
       status: 'connected' | 'needs_attention' | 'disconnected';
       connectedAt?: string;
       pages?: string[];
+      sandboxMode?: boolean;
     }
   | {
       provider: 'calendly' | 'acuity';
@@ -351,6 +352,7 @@ const defaultIntegrations: IntegrationStatus[] = [
     status: 'connected',
     connectedAt: iso(start),
     pages: ['Demo Fitness IG', 'Demo Fitness FB'],
+    sandboxMode: true,
   },
   {
     provider: 'calendly',
@@ -421,11 +423,24 @@ export class InMemoryStore {
     return this.integrations;
   }
 
-  updateIntegration(provider: IntegrationStatus['provider'], status: IntegrationStatus['status']): IntegrationStatus {
+  updateIntegration(
+    provider: IntegrationStatus['provider'],
+    updates: Partial<Omit<IntegrationStatus, 'provider'>> & { status?: IntegrationStatus['status'] },
+  ): IntegrationStatus {
     const existing = this.integrations.find((integration) => integration.provider === provider);
-    const payload: IntegrationStatus = existing
-      ? { ...existing, status, connectedAt: status === 'connected' ? iso(new Date()) : existing.connectedAt }
-      : { provider, status } as IntegrationStatus;
+    const nextStatus = updates.status ?? existing?.status ?? 'disconnected';
+    const base: IntegrationStatus =
+      existing ??
+      ({
+        provider,
+        status: nextStatus,
+      } as IntegrationStatus);
+    const payload: IntegrationStatus = {
+      ...base,
+      ...updates,
+      status: nextStatus,
+      connectedAt: nextStatus === 'connected' ? iso(new Date()) : base.connectedAt,
+    };
 
     if (existing) {
       Object.assign(existing, payload);

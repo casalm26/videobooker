@@ -17,13 +17,14 @@ This repo houses the VideoBooker product stack: a Next.js marketing/front‑offi
 | ----- | ----------- |
 | `/` | Shadcn/Tailwind marketing landing page summarising the 30-minute launch flow. |
 | `/dashboard` | Operational launchpad with the 30-minute checklist, schedule preview, inbox spotlight, and performance highlights. Served via the shared app shell (left nav + top bar). |
+| `/business` | Business profile form (category, description, hours, services) wired to `/business` and `/services` APIs. |
 | `/create` | Placeholder for template gallery and light editor workflows; links back to the launch plan. |
 | `/schedule` | Upcoming calendar overview and quota/usage concepts (scheduling MVP staging area). |
 | `/inbox` | Messaging hub placeholder showing how DM assistant and quick replies will slot in. |
 | `/bookings` | Booking management placeholder outlining daily agenda and attribution modules. |
 | `/analytics` | Analytics surface placeholder highlighting north-star KPIs, video metrics, and export plans. |
 | `/library` | Library hub placeholder covering brand kit, offers, and media/templates. |
-| `/settings` | Settings placeholder covering business profile, billing, and team management. |
+| `/settings` | Settings hub with integrations management (Meta/Calendly/Acuity) plus billing/team placeholders. |
 
 > The Next.js app uses the App Router (`apps/web/app/**`). Add new surfaces under that directory and they will be picked up automatically.
 
