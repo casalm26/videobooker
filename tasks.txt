@@ -18,7 +18,6 @@ Monorepo Skeleton (pre-Phase 0)
   - [x] Secrets management, environment configs, per-tenant data isolation (workspace `.env.example` files + typed loader in `packages/shared/src/config`).
 - Auth and RBAC
   - [ ] Email/password + OAuth (Google). Session/JWT strategy. Passwordless optional.
-  - [ ] Team roles: Owner, Staff (permissions map).
 - Data modeling (DB) in Airtable
   - [ ] Business, User, TeamMembership, Plan/Usage, BrandKit, Integration (Meta, Calendly, Acuity, Buffer/Hootsuite, Stripe), ServiceCatalog, Offer, Template, MediaAsset, VideoProject, RenderJob, PublishJob, Booking, Conversation, Message, Intent, AnalyticsEvent, ConsentLog.
 - Design system and components
@@ -34,18 +33,18 @@ Phase 1: Onboarding + 30-Minute Launch Checklist
   - [x] Left rail nav, top bar (business switcher, plan/usage, help, notifications, profile).
   - [x] Persistent checklist banner with progress states.
 - Step 1: Business profile
-  - [x] Form with category presets, services (top 3), hours, location.
+  - Form with category presets, services (top 3), hours, location.
   - [x] API: GET/PUT /business, /services; validation; smart defaults resolver by category.
 - Step 2: Connect social (Meta)
   - OAuth flow for FB/IG. States: Connected, Needs permission, Retry.
-  - [x] Test publish sandbox toggle.
+  - Test publish sandbox toggle.
   - API: /integrations/meta/connect, token exchange, long-lived tokens, refresh.
-  - [x] UI card with benefits, state badges, errors with reconnect CTA.
+  - UI card with benefits, state badges, errors with reconnect CTA.
 - Step 3: Booking integration
-  - [x] OAuth cards for Calendly/Acuity. Live availability preview sidebar.
-  - [x] Service mapping UI: Business service ↔ external event types/durations.
-  - [x] Defaults: confirmation/reminder copy.
-  - [x] Test: “Open booking link” modal with live embed.
+  - OAuth cards for Calendly/Acuity. Live availability preview sidebar.
+  - Service mapping UI: Business service ↔ external event types/durations.
+  - Defaults: confirmation/reminder copy.
+  - Test: “Open booking link” modal with live embed.
   - API: /integrations/{calendly|acuity}/connect; /availability; /service-mapping.
   - Webhooks ingestion for bookings created/updated/canceled.
 - Step 4: Brand kit
