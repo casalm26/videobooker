@@ -42,10 +42,10 @@ Phase 1: Onboarding + 30-Minute Launch Checklist
   - API: /integrations/meta/connect, token exchange, long-lived tokens, refresh.
   - [x] UI card with benefits, state badges, errors with reconnect CTA.
 - Step 3: Booking integration
-  - OAuth cards for Calendly/Acuity. Live availability preview sidebar.
-  - Service mapping UI: Business service ↔ external event types/durations.
-  - Defaults: confirmation/reminder copy.
-  - Test: “Open booking link” modal with live embed.
+  - [x] OAuth cards for Calendly/Acuity. Live availability preview sidebar.
+  - [x] Service mapping UI: Business service ↔ external event types/durations.
+  - [x] Defaults: confirmation/reminder copy.
+  - [x] Test: “Open booking link” modal with live embed.
   - API: /integrations/{calendly|acuity}/connect; /availability; /service-mapping.
   - Webhooks ingestion for bookings created/updated/canceled.
 - Step 4: Brand kit
